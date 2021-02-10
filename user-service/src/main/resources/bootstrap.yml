@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: user
+server:
+  port: 0
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true

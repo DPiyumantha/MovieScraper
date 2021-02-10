@@ -1,0 +1,7 @@
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  Datacenter: Colombo
+server:
+  port: 8761
