@@ -10,3 +10,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
+  cloud:
+    config:
+      discovery:
+        enabled: true

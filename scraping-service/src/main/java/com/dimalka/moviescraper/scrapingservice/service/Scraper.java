@@ -1,8 +1,8 @@
 package com.dimalka.moviescraper.scrapingservice.service;
 
-import com.dimalka.moviescraper.scrapingservice.model.Movie;
 import com.dimalka.moviescraper.scrapingservice.website.Baiscopedownloads;
 import com.dimalka.moviescraper.scrapingservice.website.YTS;
+import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +27,7 @@ public class Scraper {
                 return Baiscopedownloads.getScrapedMovies(url);
             default:
                 System.out.println("Unsupported website");
-                return new ArrayList<>();
+                return  new ArrayList<>();
 
         }
     }

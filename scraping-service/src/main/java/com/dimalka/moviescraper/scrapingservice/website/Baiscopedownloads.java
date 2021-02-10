@@ -1,7 +1,7 @@
 package com.dimalka.moviescraper.scrapingservice.website;
 
-import com.dimalka.moviescraper.scrapingservice.model.Movie;
 import com.dimalka.moviescraper.scrapingservice.model.Registry;
+import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

@@ -1,1 +1,4 @@
-
+cloud:
+  config:
+    discovery:
+      enabled: true
