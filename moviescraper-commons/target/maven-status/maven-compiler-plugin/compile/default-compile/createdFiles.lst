@@ -1,8 +1,0 @@
-com\dimalka\moviescrapercommons\model\userservice\User_Websites.class
-com\dimalka\moviescrapercommons\model\userservice\User_Genre.class
-com\dimalka\moviescrapercommons\model\userservice\User_Website.class
-com\dimalka\moviescrapercommons\model\userservice\WebSite.class
-com\dimalka\moviescrapercommons\model\userservice\User.class
-com\dimalka\moviescrapercommons\model\userservice\User_Genres.class
-com\dimalka\moviescrapercommons\model\scrapingservice\Movie.class
-com\dimalka\moviescrapercommons\model\userservice\Genre.class
