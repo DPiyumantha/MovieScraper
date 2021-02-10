@@ -21,3 +21,13 @@ public class User {
     private String lastName;
     private String imgUrl;
 }
+/*
+
+{
+    "userEmail":"dimalka@dimalka.lk",
+    "firstName":"Dimalka",
+    "lastName":"Perera",
+    "imgUrl":"url"
+}
+
+ */

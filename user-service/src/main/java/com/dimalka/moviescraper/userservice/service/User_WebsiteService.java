@@ -27,7 +27,11 @@ public class User_WebsiteService {
 
     public List<WebSite> getWebsitesByUserId(int id) {
         List<WebSite> list = new ArrayList<>();
-        List<Integer> websiteIds = user_websiteRepository.findByUserId(id);
+        List<User_Website> userwebsites = user_websiteRepository.findAllByUserId(id);
+        List<Integer> websiteIds = new ArrayList<>();
+        userwebsites.stream().forEach(i->{
+            websiteIds.add(i.getWebsiteId());
+        });
         websiteIds.stream().forEach(item -> {
             list.add(websiteService.getWebsiteById(item));
         });

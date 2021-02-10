@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface User_GenreRepository extends JpaRepository<User_Genre, Integer> {
-    public List<Integer> findByUserId(int id);
+    public List<User_Genre> findAllByUserId(int id);
 }

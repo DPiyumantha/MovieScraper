@@ -3,6 +3,9 @@ package com.dimalka.moviescraper.userservice.service;
 import com.dimalka.moviescraper.userservice.repository.UserRepository;
 import com.dimalka.moviescrapercommons.model.userservice.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMessage;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +15,10 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public ResponseEntity save(User user) {
+        if(getUserByUserEmail(user.getUserEmail())==null)
+        return new ResponseEntity(userRepository.save(user), HttpStatus.OK);
+        return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
     }
 
     public List<User> getAllUsers(){

@@ -3,6 +3,7 @@ package com.dimalka.moviescraper.userservice.controller;
 import com.dimalka.moviescraper.userservice.service.*;
 import com.dimalka.moviescrapercommons.model.userservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class MainController {
 
     //user
     @PostMapping("/user")
-    public User save(@RequestBody User user) {
+    public ResponseEntity save(@RequestBody User user) {
 
         return userService.save(user);
     }
