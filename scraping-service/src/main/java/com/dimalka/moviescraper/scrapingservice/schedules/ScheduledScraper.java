@@ -3,6 +3,7 @@ package com.dimalka.moviescraper.scrapingservice.schedules;
 
 
 import com.dimalka.moviescraper.scrapingservice.service.Scraper;
+import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import com.dimalka.moviescrapercommons.model.userservice.Genre;
 import com.dimalka.moviescrapercommons.model.userservice.User;
@@ -54,8 +55,7 @@ public class ScheduledScraper {
                     e.printStackTrace();
                 }
             });
-            System.out.println("Movies");
-            System.out.println(movies);
+            restTemplate.postForEntity("http://movie-repository/movies", movies, MovieRecord[].class);
         });
 
     }

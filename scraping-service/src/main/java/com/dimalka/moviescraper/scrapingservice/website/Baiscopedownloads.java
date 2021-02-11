@@ -29,7 +29,6 @@ public class Baiscopedownloads {
              ) {
             movieLinks.add(e.getElementsByTag("a").get(0).attr("href"));
         }
-        System.out.println(movieLinks);
         movieList = getMovieFromArticle(movieLinks);
 
         return movieList;
