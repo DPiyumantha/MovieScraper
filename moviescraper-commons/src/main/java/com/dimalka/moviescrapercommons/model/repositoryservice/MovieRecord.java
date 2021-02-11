@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Movie implements Cloneable {
+public class MovieRecord implements Cloneable {
     @Id
     @GeneratedValue
     int id;

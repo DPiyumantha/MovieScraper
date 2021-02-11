@@ -50,6 +50,10 @@ public class MainController {
         return genreService.getAllGenres();
     }
 
+    @PostMapping("/genres")
+public List<Integer> getIdsOfGenres(@RequestBody List<String> names){
+        return genreService.getIdsOfGenres(names);
+    }
 
     //Website
     @PostMapping("/website")

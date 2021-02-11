@@ -1,7 +1,8 @@
 package com.dimalka.moviescraper.movierepositoryservice.controller;
 
 import com.dimalka.moviescraper.movierepositoryservice.service.MovieService;
-import com.dimalka.moviescrapercommons.model.repositoryservice.Movie;
+import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
+import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +17,13 @@ public class MainController {
     MovieService movieService;
 
     @GetMapping("/movies")
-    public List<Movie> getAllMovies(){
+    public List<MovieRecord> getAllMovies(){
         return movieService.getAllMovies();
     }
 
     @PostMapping("/movies")
-    public List<Movie> saveMovies(@RequestBody List<Movie> movies){
+    public List<MovieRecord> saveMovies(@RequestBody List<Movie> movies){
         return movieService.saveAllMovies(movies);
     }
 }
+
