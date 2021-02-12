@@ -4,7 +4,5 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
   datacenter: Colombo
-  server:
-    eviction-interval-timer-in-ms: 1000
 server:
   port: 8761

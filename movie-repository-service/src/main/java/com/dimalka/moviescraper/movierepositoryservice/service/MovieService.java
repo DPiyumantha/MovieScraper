@@ -1,10 +1,13 @@
 package com.dimalka.moviescraper.movierepositoryservice.service;
 
 import com.dimalka.moviescraper.movierepositoryservice.repository.MovieRepository;
+import com.dimalka.moviescrapercommons.model.notificationservice.MailRequest;
+import com.dimalka.moviescrapercommons.model.notificationservice.MailResponse;
 import com.dimalka.moviescrapercommons.model.repositoryservice.Genre;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import com.dimalka.moviescrapercommons.model.scrapingservice.MoviePayload;
+import com.dimalka.moviescrapercommons.model.userservice.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -53,6 +56,18 @@ public class MovieService {
             if (m != null) savedMovies.add(m);
         });
         System.out.println("Saving completed for user ID "+ payload.getUserId()+"...");
+        User userFromUserService = restTemplate.getForObject("http://user/users/" + userId, User.class);
+        if(savedMovies.size()>0){
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.setName(userFromUserService.getFirstName());
+            mailRequest.setTo(userFromUserService.getUserEmail());
+            mailRequest.setFrom("dimalka.piumantha@gmail.com");
+            mailRequest.setSubject("[MovieScraper] We found new movies for you!");
+            mailRequest.setAllMovies(savedMovies);
+            mailRequest.setFilteredMovies(new ArrayList<>());
+            System.out.println("Sending mail request...");
+            restTemplate.postForEntity("http://notification/sendmail", mailRequest, MailResponse.class);
+        }
         return savedMovies;
     }
 

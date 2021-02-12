@@ -1,7 +1,7 @@
 package com.dimalka.moviescraper.notificationservice.service;
 
-import com.dimalka.moviescraper.notificationservice.model.MailRequest;
-import com.dimalka.moviescraper.notificationservice.model.MailResponse;
+import com.dimalka.moviescrapercommons.model.notificationservice.MailRequest;
+import com.dimalka.moviescrapercommons.model.notificationservice.MailResponse;
 import freemarker.core.ParseException;
 import freemarker.template.*;
 import org.springframework.beans.factory.annotation.Autowired;

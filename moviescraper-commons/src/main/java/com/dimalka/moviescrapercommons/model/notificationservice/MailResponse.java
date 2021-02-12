@@ -1,4 +1,4 @@
-package com.dimalka.moviescraper.notificationservice.model;
+package com.dimalka.moviescrapercommons.model.notificationservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

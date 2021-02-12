@@ -33,6 +33,8 @@ public class MainController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+    @GetMapping("/users/{id}")
+    public User getUserById(@PathVariable int id){return userService.getUserById(id);}
     @DeleteMapping("/users/{userId}")
     public void deleteUser(@PathVariable int userId){
         userService.deleteUserById(userId);
