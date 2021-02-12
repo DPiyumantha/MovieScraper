@@ -13,19 +13,24 @@ public class Movie_GenreService {
     Movie_GenreRepository movie_genreRepository;
 
     public List<Movie_Genre> saveAllGenres(int movieId, List<Integer> ids){
+        System.out.println("Saving all genres");
         List<Movie_Genre> savedMovieGenre = new ArrayList<>();
         ids.stream().forEach(id->{
             Movie_Genre mg = new Movie_Genre();
             mg.setGenreId(id);
             mg.setMovieId(movieId);
-            savedMovieGenre.add(save(mg));
+            Movie_Genre saved = this.save(mg);
+            savedMovieGenre.add(saved);
         });
-
+        System.out.println("Saved genres");
+        System.out.println(savedMovieGenre);
 
         return savedMovieGenre;
     }
 
     public Movie_Genre save(Movie_Genre movie_genre){
+        System.out.println("Saving genre for"+ movie_genre.getMovieId());
+        System.out.println("Here");
         return movie_genreRepository.save(movie_genre);
     }
 }

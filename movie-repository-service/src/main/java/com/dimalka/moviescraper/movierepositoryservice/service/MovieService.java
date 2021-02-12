@@ -61,6 +61,8 @@ public class MovieService {
             List<String> genres = movie.getGenres();
             HttpEntity<List<String>> request = new HttpEntity<List<String>>(genres, new HttpHeaders());
             ResponseEntity<Integer[]> res = restTemplate.postForEntity("http://user/genres", request, Integer[].class);
+            System.out.println("Genre IDs : ");
+            System.out.println(res.getBody());
             MovieRecord movieRecord = new MovieRecord();
             movieRecord.setName(movie.getName());
             movieRecord.setImdb(movie.getImdb());
