@@ -5,6 +5,6 @@ eureka:
     fetch-registry: false
   datacenter: Colombo
   server:
-    wait-time-in-ms-when-sync-empty: 0
+    eviction-interval-timer-in-ms: 1000
 server:
   port: 8761

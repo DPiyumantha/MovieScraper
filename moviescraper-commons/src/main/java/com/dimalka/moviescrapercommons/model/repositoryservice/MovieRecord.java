@@ -17,6 +17,7 @@ public class MovieRecord implements Cloneable {
     @Id
     @GeneratedValue
     int id;
+    int userId;
     String name;
     String link;
     String imdb;
