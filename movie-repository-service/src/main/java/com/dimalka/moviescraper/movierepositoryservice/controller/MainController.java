@@ -25,7 +25,6 @@ public class MainController {
 
     @PostMapping("/movies")
     public List<MovieRecord> saveMovies(@RequestBody MoviePayload payload){
-
         return movieService.saveAllMovies(payload);
     }
 }

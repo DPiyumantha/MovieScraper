@@ -1,16 +1,10 @@
 package com.dimalka.moviescraper.userservice.service;
 
-import com.dimalka.moviescraper.userservice.repository.User_WebsiteRepository;
-import com.dimalka.moviescrapercommons.model.userservice.User_Website;
-import com.dimalka.moviescrapercommons.model.userservice.WebSite;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class User_WebsiteService {
+    /*
 
     @Autowired
     User_WebsiteRepository user_websiteRepository;
@@ -37,4 +31,8 @@ public class User_WebsiteService {
         });
         return list;
     }
+
+     */
+
 }
+

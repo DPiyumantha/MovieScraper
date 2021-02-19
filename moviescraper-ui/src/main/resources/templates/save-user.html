@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <form>
+        <div class="form-group row">
+
+            <div class="col-8">
+                <input id="username" name="username" placeholder="Username" type="text" aria-describedby="usernameHelpBlock" required="required" class="form-control">
+                <span id="usernameHelpBlock" class="form-text text-muted">This will be automatically generated based on your authoorization details.</span>
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <div class="col-8">
+                <input id="email" name="email" placeholder="Email" type="text" class="form-control" aria-describedby="emailHelpBlock" required="required">
+                <span id="emailHelpBlock" class="form-text text-muted">You will receive movie insights to this email address.</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-8">
+                <input id="firstName" name="firstName" placeholder="First Name" type="text" class="form-control" required="required">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-8">
+                <input id="lastName" name="lastName" placeholder="Last Name" type="text" class="form-control" required="required">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-8">
+                <select id="genres" name="genres" class="custom-select" aria-describedby="genresHelpBlock" multiple="multiple" required="required">
+                    <option value="Action">Action</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Thriller">Thriller</option>
+                </select>
+                <span id="genresHelpBlock" class="form-text text-muted">These will be used to filter your daily insights. You will be still accessible to all the movies.</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-8">
+                <select id="webSites" name="webSites" class="custom-select" aria-describedby="webSitesHelpBlock" required="required" multiple="multiple">
+                    <option value="Basicopedownloads">Basicopedownloads</option>
+                    <option value="YTS">YTS</option>
+                    <option value="xmovies8">xmovies8</option>
+                </select>
+                <span id="webSitesHelpBlock" class="form-text text-muted">Choose any web sites from the list currently we support.</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class=" col-8">
+                <button name="submit" type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+</body>
+
+
+</html>

@@ -1,18 +1,10 @@
 package com.dimalka.moviescraper.userservice.service;
 
-import com.dimalka.moviescrapercommons.model.userservice.Genre;
-import com.dimalka.moviescrapercommons.model.userservice.User_Genre;
-import com.dimalka.moviescraper.userservice.repository.User_GenreRepository;
-import com.dimalka.moviescrapercommons.model.userservice.User_Website;
-import com.dimalka.moviescrapercommons.model.userservice.WebSite;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class User_GenreService {
+    /*
     @Autowired
     User_GenreRepository user_genreRepository;
     @Autowired
@@ -38,4 +30,6 @@ public class User_GenreService {
         });
         return list;
     }
+
+     */
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -13,29 +14,40 @@ public class GenreService {
     @Autowired
     GenreRepository genreRepository;
 
-    public Genre saveGenre(Genre genre){
+    public Genre saveGenre(Genre genre) {
         return genreRepository.save(genre);
     }
 
-    public List<Genre> getAllGenres(){
+    public List<Genre> getAllGenres() {
         return genreRepository.findAll();
     }
 
-    public Genre getGenreById(int id){
+    public Genre getGenreById(int id) {
         return genreRepository.findById(id).orElse(null);
     }
 
-    public Genre getGenreByName(String name){return genreRepository.findByName(name).orElse(null);}
+    public Genre getGenreByName(String name) {
+        return genreRepository.findByName(name).orElse(null);
+    }
 
     public List<Integer> getIdsOfGenres(List<String> names) {
         List<Integer> ids = new ArrayList<>();
 
-        names.stream().forEach(name->{
-            Genre g= getGenreByName(name);
-            if(g!=null)ids.add(g.getId());
+        names.stream().forEach(name -> {
+            Genre g = getGenreByName(name);
+            if (g != null) ids.add(g.getId());
         });
 
 
         return ids;
+    }
+
+    public List<Genre> getGenresByNames(String[] names) {
+        List<Genre> genres = new ArrayList<>();
+        Arrays.stream(names).forEach(name -> {
+            Genre genre = getGenreByName(name);
+            if (genre != null) genres.add(genre);
+        });
+        return genres;
     }
 }

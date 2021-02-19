@@ -15,6 +15,7 @@ import java.util.List;
 public class Baiscopedownloads {
     private static String searchingElementClass = "single-article";
     private static Registry registry = new Registry();
+
     public static List<Movie> getScrapedMovies(String url) throws IOException, CloneNotSupportedException {
 
         Document document = null;
@@ -24,9 +25,9 @@ public class Baiscopedownloads {
 
         Elements elements = document.getElementsByClass(searchingElementClass);
         List<Element> movieArticles = elements.subList(4, 9);
-        List<String> movieLinks= new ArrayList<>();
-        for (Element e: movieArticles
-             ) {
+        List<String> movieLinks = new ArrayList<>();
+        for (Element e : movieArticles
+        ) {
             movieLinks.add(e.getElementsByTag("a").get(0).attr("href"));
         }
         movieList = getMovieFromArticle(movieLinks);
@@ -38,26 +39,25 @@ public class Baiscopedownloads {
         List<Movie> list = new ArrayList<>();
 
 
-
-        for (String url: urls
-             ) {
+        for (String url : urls
+        ) {
             Document movieArticle;
             Movie movie = registry.getMovieInstance();
-            List<String> genres =new ArrayList<>();
+            List<String> genres = new ArrayList<>();
             movieArticle = Jsoup.connect(url).get();
             String title = movieArticle
                     .getElementsByClass("entry-title")
                     .first()
                     .ownText()
                     .split(String.valueOf(" \\("))[0];
-            String rating ="N/A";
+            String rating = "N/A";
             String image = movieArticle
                     .getElementsByClass("attachment-colormag-featured-image size-colormag-featured-image wp-post-image")
                     .get(0)
                     .attr("src");
             String link = url;
 
-            for (Element e: movieArticle.getElementsByClass("cat-links").get(0).getElementsByTag("a")
+            for (Element e : movieArticle.getElementsByClass("cat-links").get(0).getElementsByTag("a")
             ) {
                 genres.add(e.ownText());
             }

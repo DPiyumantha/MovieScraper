@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/user/**
+        - id: movie-repository
+          uri: lb://movie-repository
+          predicates:
+            - Path=/movie-repository/**
+
+
+server:
+  port: 8989

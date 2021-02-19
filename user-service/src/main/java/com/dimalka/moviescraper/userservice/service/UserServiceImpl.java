@@ -1,7 +1,9 @@
 package com.dimalka.moviescraper.userservice.service;
 
 import com.dimalka.moviescraper.userservice.repository.UserRepository;
+import com.dimalka.moviescrapercommons.model.userservice.Genre;
 import com.dimalka.moviescrapercommons.model.userservice.User;
+import com.dimalka.moviescrapercommons.model.userservice.WebSite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Override
     public ResponseEntity save(User user) {
         if(getUserByUserEmail(user.getUserEmail())==null)
@@ -34,10 +36,17 @@ public class UserServiceImpl implements UserService{
     }
 
     public int updateUser(User user){
-        return userRepository.updateUser(user.getId(),user.getUserEmail(), user.getFirstName(), user.getLastName(), user.getImgUrl());
+        return userRepository.updateUser(user.getId(),user.getUserEmail(), user.getFirstName(), user.getLastName(), user.getImgUrl(), user.getGenres(), user.getWebSites());
     }
 
     public void deleteUserById(int id){
         userRepository.deleteById(id);
+    }
+
+    public List<Genre> getGenresOfUser(int id){
+        return getUserById(id).getGenres();
+    }
+    public List<WebSite> getWebsitesOfUser(int id){
+        return getUserById(id).getWebSites();
     }
 }

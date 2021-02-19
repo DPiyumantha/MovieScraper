@@ -3,25 +3,22 @@ package com.dimalka.moviescraper.movierepositoryservice.service;
 import com.dimalka.moviescraper.movierepositoryservice.repository.MovieRepository;
 import com.dimalka.moviescrapercommons.model.notificationservice.MailRequest;
 import com.dimalka.moviescrapercommons.model.notificationservice.MailResponse;
-import com.dimalka.moviescrapercommons.model.repositoryservice.Genre;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import com.dimalka.moviescrapercommons.model.scrapingservice.MoviePayload;
+import com.dimalka.moviescrapercommons.model.userservice.Genre;
 import com.dimalka.moviescrapercommons.model.userservice.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MovieService {
@@ -38,25 +35,28 @@ public class MovieService {
 
     @Autowired
     MovieRepository movieRepository;
-    @Autowired
-    Movie_GenreService movie_genreService;
+
 
     public List<MovieRecord> getAllMovies() {
         return movieRepository.findAll();
     }
 
     public List<MovieRecord> saveAllMovies(MoviePayload payload) {
-        System.out.println("Saving all movies for user ID "+ payload.getUserId()+"...");
+
         List<Movie> list = payload.getMovies();
         int userId = payload.getUserId();
+        System.out.println("Saving all movies for user ID "+ userId+"...");
         List<MovieRecord> savedMovies = new ArrayList<>();
         list.stream().forEach(movie -> {
 
             MovieRecord m = saveMovie(movie, userId);
             if (m != null) savedMovies.add(m);
         });
-        System.out.println("Saving completed for user ID "+ payload.getUserId()+"...");
-        User userFromUserService = restTemplate.getForObject("http://user/users/" + userId, User.class);
+        System.out.println("Saving completed for user ID "+ userId+"...");
+        ResponseEntity<User> userFromUserServiceRes =
+                restTemplate.exchange("http://user/user-api/users/"+userId, HttpMethod.GET, contactUserService(), User.class);
+        User userFromUserService = userFromUserServiceRes.getBody();
+        System.out.println("Saved movies : "+savedMovies.size());
         if(savedMovies.size()>0){
             MailRequest mailRequest = new MailRequest();
             mailRequest.setName(userFromUserService.getFirstName());
@@ -75,18 +75,27 @@ public class MovieService {
         if (getMovieByNameAndUser(movie.getName(), userId) == null) {
             List<String> genres = movie.getGenres();
             HttpEntity<List<String>> request = new HttpEntity<List<String>>(genres, new HttpHeaders());
-            ResponseEntity<Integer[]> res = restTemplate.postForEntity("http://user/genres", request, Integer[].class);
-            System.out.println("Genre IDs : ");
-            System.out.println(res.getBody());
+//            ResponseEntity<Integer[]> res = restTemplate.postForEntity("http://user/
+
+            ResponseEntity<Genre[]> genreObjs =
+                restTemplate.exchange("http://user/genre-api/genreobjs", HttpMethod.POST, contactUserService(genres), Genre[].class);
+            List<com.dimalka.moviescrapercommons.model.repositoryservice.Genre> listOfGenres = new ArrayList<>();
+            Arrays.stream(Objects.requireNonNull(genreObjs.getBody())).forEach(g->{
+                com.dimalka.moviescrapercommons.model.repositoryservice.Genre gs =
+                        new com.dimalka.moviescrapercommons.model.repositoryservice.Genre();
+                gs.setId(g.getId());
+                gs.setName(g.getName());
+                listOfGenres.add(gs);
+
+            });
             MovieRecord movieRecord = new MovieRecord();
             movieRecord.setName(movie.getName());
             movieRecord.setImdb(movie.getImdb());
             movieRecord.setImg(movie.getImg());
             movieRecord.setLink(movie.getLink());
             movieRecord.setUserId(userId);
-            MovieRecord mr = movieRepository.save(movieRecord);
-            movie_genreService.saveAllGenres(mr.getId(), Arrays.asList(res.getBody()));
-            return mr;
+            movieRecord.setGenres(listOfGenres);
+            return movieRepository.save(movieRecord);
         }
         return null;
     }
@@ -94,5 +103,69 @@ public class MovieService {
     private MovieRecord getMovieByNameAndUser(String name, int userId) {
         List<MovieRecord> mrList = movieRepository.findAllByName(name);
         return mrList.stream().filter(m->m.getUserId()==userId).findFirst().orElse(null);
+    }
+
+    private HttpEntity contactUserService(){
+        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headersForResource = new HttpHeaders();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+
+        String plainCreds = "scraping-service:scrapingpin";
+        byte[] plainCredsBytes = plainCreds.getBytes();
+        byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredsBytes);
+        String base64Creds = new String(base64CredsBytes);
+
+
+        map.add("grant_type", "password");
+        map.add("username", "admin");
+        map.add("password", "admin123");
+
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", "Basic " + base64Creds);
+
+        HttpEntity<MultiValueMap<String, String>> oauth2request = new HttpEntity<>(map, headers);
+
+        ResponseEntity<String> response =
+                restTemplate.postForEntity("http://authorization-server/oauth/token", oauth2request, String.class);
+        String authToken = response.getBody().split("\"")[3];
+        System.out.println("Auth token "+authToken);
+
+        headersForResource.add("Authorization", "Bearer " + authToken);
+        HttpEntity serviceRequest = new HttpEntity(headersForResource);
+
+        return serviceRequest;
+
+    }
+
+    private HttpEntity contactUserService(List<String> body){
+        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headersForResource = new HttpHeaders();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+
+        String plainCreds = "scraping-service:scrapingpin";
+        byte[] plainCredsBytes = plainCreds.getBytes();
+        byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredsBytes);
+        String base64Creds = new String(base64CredsBytes);
+
+
+        map.add("grant_type", "password");
+        map.add("username", "admin");
+        map.add("password", "admin123");
+
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", "Basic " + base64Creds);
+
+        HttpEntity<MultiValueMap<String, String>> oauth2request = new HttpEntity<>(map, headers);
+
+        ResponseEntity<String> response =
+                restTemplate.postForEntity("http://authorization-server/oauth/token", oauth2request, String.class);
+        String authToken = response.getBody().split("\"")[3];
+        System.out.println("Auth token "+authToken);
+
+        headersForResource.add("Authorization", "Bearer " + authToken);
+        HttpEntity serviceRequest = new HttpEntity(body,headersForResource);
+
+        return serviceRequest;
+
     }
 }

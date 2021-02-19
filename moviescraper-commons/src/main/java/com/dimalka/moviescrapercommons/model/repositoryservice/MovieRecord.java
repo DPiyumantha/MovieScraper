@@ -5,8 +5,9 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.List;
-
+@Data
 @Entity
 @Getter
 @Setter
@@ -22,6 +23,9 @@ public class MovieRecord implements Cloneable {
     String link;
     String imdb;
     String img;
+
+    @ManyToMany
+    List<Genre> genres;
 
 
 

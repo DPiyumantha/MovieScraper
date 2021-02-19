@@ -1,14 +1,12 @@
 package com.dimalka.moviescrapercommons.model.userservice;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

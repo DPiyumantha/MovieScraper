@@ -2,7 +2,6 @@ package com.dimalka.moviescrapercommons.model.notificationservice;
 
 
 import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
-import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import lombok.Data;
 
 import java.util.List;
