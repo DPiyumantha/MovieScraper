@@ -1,0 +1,45 @@
+server:
+  port: 8990
+spring:
+  cloud:
+    discovery:
+      enabled: true
+  application:
+    name: zuul-gateway
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+zuul:
+  host:
+    connect-timeout-millis: 500000
+    socket-timeout-millis: 500000
+  ignored-services: "*"
+  routes:
+    user-service:
+      path: /user/**
+      serviceId: user
+      stripPrefix: true
+  sensitive-headers: Cookie, Set-Cookie
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+
+
+ribbon:
+  ReadTimeout: 60000
+  connection-timeout: 3000
+  eureka:
+    enabled: true
+
+

@@ -3,14 +3,23 @@ spring:
     gateway:
       routes:
         - id: user
-          uri: lb://USER
+          uri: lb://user/
           predicates:
             - Path=/user/**
         - id: movie-repository
           uri: lb://movie-repository
           predicates:
             - Path=/movie-repository/**
-
+    discovery:
+      enabled: true
+  application:
+    name: api-gateway
 
 server:
   port: 8989
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+     defaultZone: http://localhost:8761/eureka

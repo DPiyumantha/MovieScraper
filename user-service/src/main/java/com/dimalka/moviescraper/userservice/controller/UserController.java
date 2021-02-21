@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,8 @@ public class UserController {
         return userService.save(user);
     }
     @GetMapping("/users")
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(Principal principal) {
+        System.out.println(principal.getName());
         return userService.getAllUsers();
     }
     @GetMapping("/users/{id}")
