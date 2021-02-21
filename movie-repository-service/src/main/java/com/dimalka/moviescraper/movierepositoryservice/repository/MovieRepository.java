@@ -9,4 +9,6 @@ public interface MovieRepository extends JpaRepository<MovieRecord, Integer> {
 
 
     List<MovieRecord> findAllByName(String name);
+    List<MovieRecord> findAllByUserId(int id);
+
 }

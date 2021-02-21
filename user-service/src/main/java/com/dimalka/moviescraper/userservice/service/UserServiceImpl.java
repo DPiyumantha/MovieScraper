@@ -49,4 +49,8 @@ public class UserServiceImpl implements UserService{
     public List<WebSite> getWebsitesOfUser(int id){
         return getUserById(id).getWebSites();
     }
+
+    public User getUserByUsername(String name) {
+        return userRepository.findByUsername(name);
+    }
 }

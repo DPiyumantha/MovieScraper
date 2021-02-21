@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+
 @RestController
 @RequestMapping(value = "/user-api")
 public class UserController {
@@ -28,36 +29,56 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
+
     @PostMapping("/users")
     public ResponseEntity save(@RequestBody User user) {
 
         return userService.save(user);
     }
+
     @GetMapping("/users")
-    public List<User> getAllUsers(Principal principal) {
-        System.out.println(principal.getName());
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+
+    @GetMapping("/users/user")
+    public User getUserByUsername(Principal principal) {
+        return userService.getUserByUsername(principal.getName());
+    }
+
+    @GetMapping("/users/username")
+    public String getUserUsername(Principal principal) {
+        return principal.getName();
+    }
+
+
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable int id){return userService.getUserById(id);}
+    public User getUserById(@PathVariable int id) {
+        return userService.getUserById(id);
+    }
+
+
     @DeleteMapping("/users/{userId}")
-    public void deleteUser(@PathVariable int userId){
+    public void deleteUser(@PathVariable int userId) {
         userService.deleteUserById(userId);
     }
-//    @PatchMapping("/users")
+
+    //    @PatchMapping("/users")
 //    public int updateUser(@RequestBody User user){
 //        return userService.updateUser(user);
 //    }
+    @CrossOrigin
     @GetMapping("/users/{id}/genres")
-    public List<Genre> getGenresOfUser(@PathVariable int id){
+    public List<Genre> getGenresOfUser(@PathVariable int id) {
         return userService.getGenresOfUser(id);
     }
 
+    @CrossOrigin
     @GetMapping("/users/{id}/websites")
-    public List<WebSite> getWebsitesOfUser(@PathVariable int id){
+    public List<WebSite> getWebsitesOfUser(@PathVariable int id) {
         return userService.getWebsitesOfUser(id);
     }
-
 
 
 }

@@ -168,4 +168,8 @@ public class MovieService {
         return serviceRequest;
 
     }
+
+    public List<MovieRecord> getAllMoviesByUserId(int id) {
+        return movieRepository.findAllByUserId(id);
+    }
 }

@@ -1,5 +1,7 @@
 package com.dimalka.projectui.Controller;
 
+import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
+import com.dimalka.moviescrapercommons.model.userservice.User;
 import com.dimalka.projectui.Model.Project;
 import com.dimalka.projectui.config.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ public class UIController extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated();
     }
 
@@ -35,25 +38,32 @@ public class UIController extends WebSecurityConfigurerAdapter {
         return "home";
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.logout();
+        return "home";
+    }
+
     @RequestMapping("/secure")
     public String loadSecureUI(){
         return "secure";
     }
 
-    @RequestMapping("/projects")
+    @RequestMapping("/all-movies")
     public String loadProjects(Model model){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", AccessToken.getAccessToken());
-
-        HttpEntity<Project> projectHttpEntity = new HttpEntity<>(httpHeaders);
+HttpEntity<User> userHttpEntity =new HttpEntity<>(httpHeaders);
+        HttpEntity<MovieRecord> movieHttpEntity = new HttpEntity<>(httpHeaders);
         try {
-            ResponseEntity<Project[]> responseEntity = restTemplate.exchange("http://localhost:3710/project", HttpMethod.GET, projectHttpEntity, Project[].class);
-            model.addAttribute("projects", responseEntity.getBody());
+            ResponseEntity<User> userresponseEntity = restTemplate.exchange("http://localhost:8990/user/user-api/users/user", HttpMethod.GET, userHttpEntity, User.class);
+            ResponseEntity<MovieRecord[]> responseEntity = restTemplate.exchange("http://localhost:8990/movie-repository/movies/"+userresponseEntity.getBody().getId(), HttpMethod.GET, movieHttpEntity, MovieRecord[].class);
+            model.addAttribute("allMovies", responseEntity.getBody());
         }catch (HttpStatusCodeException e){
             ResponseEntity responseEntity = ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders()).body(e.getResponseBodyAsString());
             model.addAttribute("error", responseEntity);
         }
 
-        return "secure";
+        return "all-movies";
     }
 }

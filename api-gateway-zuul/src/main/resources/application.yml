@@ -26,6 +26,10 @@ zuul:
       path: /user/**
       serviceId: user
       stripPrefix: true
+    movie-repository-service:
+      path: /movie-repository/**
+      serviceId: movie-repository
+      stripPrefix: true
   sensitive-headers: Cookie, Set-Cookie
 hystrix:
   command:

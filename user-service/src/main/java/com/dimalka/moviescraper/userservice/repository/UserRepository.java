@@ -13,6 +13,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     public User findByUserEmail(String userEmail);
+    public User findByUsername(String username);
 
     @Modifying
     @Transactional
