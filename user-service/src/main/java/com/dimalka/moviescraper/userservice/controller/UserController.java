@@ -58,16 +58,22 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/users/username/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
+    }
+
 
     @DeleteMapping("/users/{userId}")
     public void deleteUser(@PathVariable int userId) {
         userService.deleteUserById(userId);
     }
 
-    //    @PatchMapping("/users")
-//    public int updateUser(@RequestBody User user){
-//        return userService.updateUser(user);
-//    }
+    @PatchMapping("/users")
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
     @CrossOrigin
     @GetMapping("/users/{id}/genres")
     public List<Genre> getGenresOfUser(@PathVariable int id) {

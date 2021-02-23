@@ -18,4 +18,5 @@ public class WebSite {
     @GeneratedValue
     private int websiteId;
     private String url;
+    private String name;
 }

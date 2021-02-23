@@ -53,9 +53,11 @@ Fade.propTypes = {
 };
 
 export default function UserDetails({ userObj, username }) {
+  console.log("UserDetails : ", userObj)
+  console.log("UserDetails : ", username)
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(userObj);
 
   const handleOpen = () => {
     setOpen(true);
@@ -70,7 +72,7 @@ console.log(user)
     else{
     setUser({});
     }
-}, [user]);
+}, [userObj]);
 
   return (
     <div>
@@ -102,7 +104,7 @@ console.log(user)
           <div className={classes.paper}>
             <h2 id="spring-modal-title">User Details</h2>
             {/* <p id="spring-modal-description">react-spring animates me.</p> */}
-            <UserForm user={user ? user : {}} usernameid={username} />
+            <UserForm userObj={user ? user : {}} usernameid={username} />
           </div>
         </Fade>
       </Modal>

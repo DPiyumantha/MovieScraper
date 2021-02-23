@@ -14,10 +14,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     public User findByUserEmail(String userEmail);
     public User findByUsername(String username);
+    public User findById(String username);
 
-    @Modifying
-    @Transactional
-    @Query("update User u set u.firstName=?3, u.userEmail=?2, u.lastName=?4, u.imgUrl=?5 where u.id=?1")
-    public int updateUser(int id, String userEmail, String firstName, String lastName, String imgUrl, List<Genre> genres, List<WebSite> websites);
+//    @Modifying
+//    @Transactional
+//    @Query("update User u set u.firstName=?3, u.userEmail=?2, u.lastName=?4, u.imgUrl=?5 where u.id=?1")
+//    public int updateUser(int id, String userEmail, String firstName, String lastName, String imgUrl, List<Genre> genres, List<WebSite> websites);
 
 }

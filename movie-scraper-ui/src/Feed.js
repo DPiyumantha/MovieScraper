@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import MovieTable from "./MovieTable";
-
+import { handle401 } from "./helpers.js/error";
 
 function Feed() {
 
@@ -11,9 +11,7 @@ function Feed() {
     useEffect(async () => {
         const userResult = await axios(
             'http://localhost:8990/user/user-api/users/user', 
-          ).catch(err=>{
-            // localStorage.removeItem("token");
-          });
+          ).catch((err) => {if(err.response.status==401)handle401()});
           if (userResult) setUser(userResult.data);
           
 
