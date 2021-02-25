@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     width: "500px",
+    height:"75vh",
+    flex:1,
+    overflowY: "scroll"
+    
   },
 }));
 
@@ -104,7 +108,7 @@ console.log(user)
           <div className={classes.paper}>
             <h2 id="spring-modal-title">User Details</h2>
             {/* <p id="spring-modal-description">react-spring animates me.</p> */}
-            <UserForm userObj={user ? user : {}} usernameid={username} />
+            <UserForm  userObj={user ? user : {}} usernameid={username} />
           </div>
         </Fade>
       </Modal>

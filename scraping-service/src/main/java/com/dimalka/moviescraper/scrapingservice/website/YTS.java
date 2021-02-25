@@ -36,10 +36,13 @@ public class YTS {
             } else {
                 imdb = "N/A";
             }
-            if (h4s.size() > 2) {
+            if (h4s.size() == 2) {
+                genres.add(h4s.get(1).ownText());
+
+            } else if(h4s.size()>2){
                 genres.add(h4s.get(1).ownText());
                 genres.add(h4s.get(2).ownText());
-            } else {
+            }else {
                 genres.add("N/A");
             }
             String nameA = e.getElementsByClass("browse-movie-bottom").get(0).getAllElements().get(1).ownText();
