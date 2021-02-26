@@ -53,10 +53,6 @@ public class YTS {
             movie.setGenres(genres);
             movieList.add(movie);
         }
-        movieList.remove(movieList.size()-1);
-        movieList.remove(movieList.size()-2);
-        movieList.remove(movieList.size()-3);
-        movieList.remove(movieList.size()-4);
         return movieList;
     }
 

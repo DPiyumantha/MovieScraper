@@ -23,6 +23,7 @@ public class MovieRecord implements Cloneable {
     String link;
     String imdb;
     String img;
+    int year;
 
     @ManyToMany
     List<Genre> genres;

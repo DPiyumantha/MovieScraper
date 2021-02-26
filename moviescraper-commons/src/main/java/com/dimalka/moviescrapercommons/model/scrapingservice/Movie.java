@@ -18,6 +18,7 @@ public class Movie implements Cloneable {
     String link;
     String imdb;
     String img;
+    int year;
     List<String> genres;
 
     @Override
