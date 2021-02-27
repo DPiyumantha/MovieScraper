@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class MovieService {
@@ -57,6 +58,20 @@ public class MovieService {
                 restTemplate.exchange("http://user/user-api/users/"+userId, HttpMethod.GET, contactUserService(), User.class);
         User userFromUserService = userFromUserServiceRes.getBody();
         System.out.println("Saved movies : "+savedMovies.size());
+        List<Integer> userPreferredGenresIds = new ArrayList<>();
+        userFromUserService.getGenres().stream().forEach(genre -> userPreferredGenresIds.add(genre.getId()));
+        List<MovieRecord> filteredMovies = new ArrayList<>();
+        savedMovies.stream().forEach(movieRecord -> {
+            AtomicBoolean matched = new AtomicBoolean(false);
+            List<Integer> genreIdsOfSavedMovie = new ArrayList<>();
+            movieRecord.getGenres().stream().forEach(genre -> genreIdsOfSavedMovie.add(genre.getId()));
+            genreIdsOfSavedMovie.stream().forEach(gid->{
+                if(userPreferredGenresIds.contains(gid)){
+                    matched.set(true);}
+            });
+            if(matched.get()){filteredMovies.add(movieRecord);}
+
+        });
         if(savedMovies.size()>0){
             MailRequest mailRequest = new MailRequest();
             mailRequest.setName(userFromUserService.getFirstName());
@@ -64,7 +79,7 @@ public class MovieService {
             mailRequest.setFrom("dimalka.piumantha@gmail.com");
             mailRequest.setSubject("[MovieScraper] We found new movies for you!");
             mailRequest.setAllMovies(savedMovies);
-            mailRequest.setFilteredMovies(new ArrayList<>());
+            mailRequest.setFilteredMovies(filteredMovies);
             System.out.println("Sending mail request...");
             restTemplate.postForEntity("http://notification/sendmail", mailRequest, MailResponse.class);
         }
@@ -75,7 +90,6 @@ public class MovieService {
         if (getMovieByNameAndUser(movie.getName(), userId) == null) {
             List<String> genres = movie.getGenres();
             HttpEntity<List<String>> request = new HttpEntity<List<String>>(genres, new HttpHeaders());
-//            ResponseEntity<Integer[]> res = restTemplate.postForEntity("http://user/
 
             ResponseEntity<Genre[]> genreObjs =
                 restTemplate.exchange("http://user/genre-api/genreobjs", HttpMethod.POST, contactUserService(genres), Genre[].class);
@@ -95,6 +109,7 @@ public class MovieService {
             movieRecord.setLink(movie.getLink());
             movieRecord.setUserId(userId);
             movieRecord.setGenres(listOfGenres);
+            movieRecord.setYear(movie.getYear());
             return movieRepository.save(movieRecord);
         }
         return null;

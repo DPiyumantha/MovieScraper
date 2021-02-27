@@ -4,6 +4,8 @@ import com.dimalka.moviescraper.movierepositoryservice.service.MovieService;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import com.dimalka.moviescrapercommons.model.scrapingservice.MoviePayload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.Map;
 
 @RestController
 public class MainController {
+    Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     MovieService movieService;
 

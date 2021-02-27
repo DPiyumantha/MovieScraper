@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity save(User user) {
         if (getUserByUserEmail(user.getUserEmail()) == null)
             return new ResponseEntity(userRepository.save(user), HttpStatus.OK);
-        return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Email address"+user.getUserEmail() +" already exists", HttpStatus.BAD_REQUEST);
     }
 
     public List<User> getAllUsers() {
@@ -37,23 +37,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserEmail(userEmail);
     }
 
-    public User updateUser(User user) {
-//        return userRepository.updateUser(user.getId(),user.getUserEmail(), user.getFirstName(), user.getLastName(), user.getImgUrl(), user.getGenres(), user.getWebSites());
+    public ResponseEntity updateUser(User user) {
         User userOriginal = getUserById(user.getId());
         User updatedUser = user;
-        List<Genre> genres = new ArrayList<>();
-        List<WebSite> websites = new ArrayList<>();
-
-        userOriginal.setFirstName(updatedUser.getFirstName());
-        userOriginal.setLastName(updatedUser.getLastName());
-        userOriginal.setUserEmail(updatedUser.getUserEmail());
-        genres.addAll(updatedUser.getGenres());
-        websites.addAll(updatedUser.getWebSites());
-        userOriginal.setGenres(genres);
-        userOriginal.setWebSites(websites);
-
-
-        return userRepository.save(userOriginal);
+        if(getUserByUserEmail(updatedUser.getUserEmail())==null
+                || getUserByUserEmail(updatedUser.getUserEmail()).getId()==userOriginal.getId()){
+            List<Genre> genres = new ArrayList<>();
+            List<WebSite> websites = new ArrayList<>();
+            userOriginal.setFirstName(updatedUser.getFirstName());
+            userOriginal.setLastName(updatedUser.getLastName());
+            userOriginal.setUserEmail(updatedUser.getUserEmail());
+            genres.addAll(updatedUser.getGenres());
+            websites.addAll(updatedUser.getWebSites());
+            userOriginal.setGenres(genres);
+            userOriginal.setWebSites(websites);
+            return new ResponseEntity(userRepository.save(userOriginal), HttpStatus.OK);
+        }
+        return new ResponseEntity("Email address"+user.getUserEmail() +" already registered for another user", HttpStatus.BAD_REQUEST);
     }
 
     public void deleteUserById(int id) {

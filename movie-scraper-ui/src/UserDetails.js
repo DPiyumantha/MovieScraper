@@ -6,6 +6,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import { useSpring, animated } from "react-spring/web.cjs"; // web.cjs is required for IE 11 support
 import { Button } from "@material-ui/core";
 import UserForm from "./UserForm";
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -79,7 +80,7 @@ console.log(user)
 }, [userObj]);
 
   return (
-    <div>
+    <div >
       {/* <button type="button" onClick={handleOpen}>
         react-spring
       </button> */}

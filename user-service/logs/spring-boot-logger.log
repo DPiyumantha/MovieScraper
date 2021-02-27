@@ -1,0 +1,15 @@
+2021-02-28 00:58:13,022 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-02-28 00:58:19,252 INFO org.springframework.boot.StartupInfoLogger [main] Started UserServiceApplication in 8.951 seconds (JVM running for 9.495)
+2021-02-28 00:59:51,796 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No user with id 545
+2021-02-28 01:01:08,730 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-3] No user with id 545
+2021-02-28 01:01:11,909 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-8] No user with id 545
+2021-02-28 01:03:07,460 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-6] No user with id 545
+2021-02-28 01:03:17,628 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-02-28 01:03:28,221 INFO org.springframework.boot.StartupInfoLogger [main] Started UserServiceApplication in 13.471 seconds (JVM running for 14.021)
+2021-02-28 01:04:33,449 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No user with id 545 :No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!
+2021-02-28 01:05:25,939 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-4] No user with id 545 :No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!
+2021-02-28 01:05:40,757 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-02-28 01:05:47,854 INFO org.springframework.boot.StartupInfoLogger [main] Started UserServiceApplication in 9.978 seconds (JVM running for 10.558)
+2021-02-28 01:09:09,321 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-02-28 01:09:15,537 INFO org.springframework.boot.StartupInfoLogger [main] Started UserServiceApplication in 8.871 seconds (JVM running for 9.38)
+2021-02-28 01:09:50,095 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!

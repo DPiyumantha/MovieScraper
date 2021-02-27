@@ -5,7 +5,11 @@ import com.dimalka.moviescraper.userservice.service.UserServiceImpl;
 import com.dimalka.moviescrapercommons.model.userservice.Genre;
 import com.dimalka.moviescrapercommons.model.userservice.User;
 import com.dimalka.moviescrapercommons.model.userservice.WebSite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/user-api")
 public class UserController {
-    /*
-    {
-    "userEmail":"dimalka@dimalka.lk",
-    "username":"dima"
-    "firstName":"Dimalka",
-    "lastName":"Perera",
-    "imgUrl":"url"
-}
-    * */
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     UserServiceImpl userService;
@@ -65,12 +61,19 @@ public class UserController {
 
 
     @DeleteMapping("/users/{userId}")
-    public void deleteUser(@PathVariable int userId) {
-        userService.deleteUserById(userId);
+    public ResponseEntity deleteUser(@PathVariable int userId) {
+
+        try {
+            userService.deleteUserById(userId);
+            return new ResponseEntity(userId, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            log.error(e.getLocalizedMessage());
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        }
     }
 
     @PatchMapping("/users")
-    public User updateUser(@RequestBody User user) {
+    public ResponseEntity updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
 

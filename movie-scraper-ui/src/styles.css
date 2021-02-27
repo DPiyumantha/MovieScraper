@@ -17,8 +17,8 @@
   }
 
   .login-page {
-    background-color: #282c34;
-    min-height: 100vh;
+    background-color: rgba(213, 230, 233, 0.7);
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;

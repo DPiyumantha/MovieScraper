@@ -1,0 +1,2 @@
+2021-02-28 02:03:45,608 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-02-28 02:03:52,724 INFO org.springframework.boot.StartupInfoLogger [main] Started MovieRepositoryServiceApplication in 10.249 seconds (JVM running for 11.572)

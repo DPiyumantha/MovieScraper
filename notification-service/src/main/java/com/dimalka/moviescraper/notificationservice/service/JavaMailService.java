@@ -4,6 +4,8 @@ import com.dimalka.moviescrapercommons.model.notificationservice.MailRequest;
 import com.dimalka.moviescrapercommons.model.notificationservice.MailResponse;
 import freemarker.core.ParseException;
 import freemarker.template.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
@@ -25,16 +27,7 @@ public class JavaMailService{
 private JavaMailSender javaMailSender;
 @Autowired
 private Configuration config;
-
-//    public void sendEmail(String to, String body, String subject){
-//        System.out.println("Sending...");
-//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-//        simpleMailMessage.setTo(to);
-//        simpleMailMessage.setSubject(subject);
-//        simpleMailMessage.setText(body);
-//        javaMailSender.send(simpleMailMessage);
-//        System.out.println("Sent!");
-//    }
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     public MailResponse sendEmail(MailRequest mailRequest, Map<String, Object> model){
         MailResponse response = new MailResponse();
@@ -45,11 +38,8 @@ private Configuration config;
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name()
             );
-//            helper.addAttachment("logo.png", new ClassPathResource("logo.png"));
-
             Template template = config.getTemplate("email-template.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
             helper.setTo(mailRequest.getTo());
             helper.setText(html, true);
             helper.setSubject(mailRequest.getSubject());
@@ -58,13 +48,10 @@ private Configuration config;
             response.setMessage("Mail sent to : "+mailRequest.getTo());
             response.setStatus(Boolean.TRUE);
         } catch (MessagingException | IOException | TemplateException e) {
-//            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             response.setMessage("Mail to : "+mailRequest.getTo()+" failed!");
             response.setStatus(Boolean.FALSE);
         }
-
-
-
         return response;
     }
 }

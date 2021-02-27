@@ -13,6 +13,7 @@ import java.util.List;
 
 public class YTS {
     private static String searchingElementClass = "browse-movie-wrap";
+
     public static List<Movie> getScrapedMovies(String url) throws IOException, CloneNotSupportedException {
 
         Document document = null;
@@ -30,8 +31,8 @@ public class YTS {
             Elements h4s = figure.getElementsByTag("h4");
             List<String> genres = new ArrayList<>();
             String imdb;
-
-            if (h4s.size() > 0) {
+            String imgA = url + e.getElementsByTag("img").first().attr("src");
+            if (h4s.size() > 0 && h4s.get(0).ownText().contains("/")) {
                 imdb = h4s.get(0).ownText();
             } else {
                 imdb = "N/A";
@@ -39,20 +40,27 @@ public class YTS {
             if (h4s.size() == 2) {
                 genres.add(h4s.get(1).ownText());
 
-            } else if(h4s.size()>2){
+            } else if (h4s.size() > 2) {
                 genres.add(h4s.get(1).ownText());
                 genres.add(h4s.get(2).ownText());
-            }else {
+            } else {
                 genres.add("N/A");
             }
             String nameA = e.getElementsByClass("browse-movie-bottom").get(0).getAllElements().get(1).ownText();
             String urlA = e.getElementsByClass("browse-movie-bottom").get(0).getAllElements().get(1).attr("href");
-            movie.setName(nameA);
-            movie.setLink(urlA);
-            movie.setImdb(imdb);
-            movie.setGenres(genres);
-            movieList.add(movie);
+            int yearA = Integer.parseInt(e.getElementsByClass("browse-movie-bottom").first().getElementsByClass("browse-movie-year").first().ownText().split(" ")[0]);
+            if (e.getElementsByClass("browse-movie-bottom").first().getElementsByClass("browse-movie-year").first().ownText().split(" ").length == 1) {
+                movie.setName(nameA);
+                movie.setLink(urlA);
+                movie.setImdb(imdb);
+                movie.setGenres(genres);
+                movie.setYear(yearA);
+                movie.setImg(imgA);
+                movieList.add(movie);
+            }
+
         }
+
         return movieList;
     }
 

@@ -50,6 +50,11 @@ public class Baiscopedownloads {
                     .first()
                     .ownText()
                     .split(String.valueOf(" \\("))[0];
+            int year = Integer.parseInt(movieArticle
+                    .getElementsByClass("entry-title")
+                    .first()
+                    .ownText()
+                    .split(String.valueOf(" \\("))[1].split(String.valueOf("\\)"))[0]);
             String rating = "N/A";
             String image = movieArticle
                     .getElementsByClass("attachment-colormag-featured-image size-colormag-featured-image wp-post-image")
@@ -66,6 +71,7 @@ public class Baiscopedownloads {
             movie.setName(title);
             movie.setLink(link);
             movie.setImg(image);
+            movie.setYear(year);
             list.add(movie);
 
         }

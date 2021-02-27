@@ -8,7 +8,7 @@ public class Registry {
 com.dimalka.moviescrapercommons.model.scrapingservice.Movie movie;
 
     public Registry(){
-        movie= new Movie("Movie",  "URL", "Rating", "Image", new ArrayList<String>());
+        movie= new Movie("Movie",  "URL", "Rating", "Image",0, new ArrayList<String>());
     }
 
     public Movie getMovieInstance() throws CloneNotSupportedException {

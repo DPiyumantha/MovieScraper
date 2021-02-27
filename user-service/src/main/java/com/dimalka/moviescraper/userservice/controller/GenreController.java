@@ -2,6 +2,8 @@ package com.dimalka.moviescraper.userservice.controller;
 
 import com.dimalka.moviescraper.userservice.service.GenreService;
 import com.dimalka.moviescrapercommons.model.userservice.Genre;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/genre-api")
 public class GenreController {
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     GenreService genreService;
