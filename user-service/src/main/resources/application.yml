@@ -17,6 +17,6 @@ security:
     resource:
       token-info-uri: http://localhost:9191/oauth/check_token
     client:
-      client-id: mobile
+      client-id: MovieScraper
       client-secret: pin
 

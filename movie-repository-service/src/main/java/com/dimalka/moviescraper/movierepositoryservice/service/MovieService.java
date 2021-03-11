@@ -56,6 +56,7 @@ public class MovieService {
         System.out.println("Saving completed for user ID "+ userId+"...");
         ResponseEntity<User> userFromUserServiceRes =
                 restTemplate.exchange("http://user/user-api/users/"+userId, HttpMethod.GET, contactUserService(), User.class);
+        System.out.println(userFromUserServiceRes);
         User userFromUserService = userFromUserServiceRes.getBody();
         System.out.println("Saved movies : "+savedMovies.size());
         List<Integer> userPreferredGenresIds = new ArrayList<>();

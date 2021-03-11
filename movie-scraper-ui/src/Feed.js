@@ -27,7 +27,7 @@ function Feed() {
       }, [user]);
     return (
       <div className="Feed">
-        <MovieTable moviedata = {movieRecords}/>
+        <MovieTable  moviedata = {movieRecords}/>
 
         
       </div>

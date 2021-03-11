@@ -1,15 +1,15 @@
 package com.dimalka.moviescraper.scrapingservice.controller;
 
+import com.dimalka.moviescraper.scrapingservice.schedules.ScheduledScraper;
 import com.dimalka.moviescraper.scrapingservice.service.Scraper;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
+import com.dimalka.moviescrapercommons.model.userservice.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,11 +19,15 @@ public class MainController {
     Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     Scraper scraper;
+    @Autowired
+    ScheduledScraper scheduledScraper;
 
-    @GetMapping("/")
-    public String greet(){
-        System.out.println("Greet");
-        return "Hello";
+    @PostMapping("/scrape")
+    public String scrapeForUser(@RequestBody User user){
+        System.out.println("In /scraper");
+        System.out.println(user);
+        new Thread(() ->  scheduledScraper.scrapeForUser(user)).start();
+        return "Scraper started";
     }
 
     @GetMapping( value = "/movies", params = {"url"})

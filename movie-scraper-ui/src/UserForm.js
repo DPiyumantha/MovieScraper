@@ -8,20 +8,19 @@ import { handle401 } from "./helpers.js/error";
 import ReactSelect from "./components/ReactSelect";
 import CustomSelector from "./components/CustomSelector";
 import MultiSelect from "react-multi-select-component";
-import Chip from '@material-ui/core/Chip';
+import Chip from "@material-ui/core/Chip";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
       width: "50ch",
     },
-
   },
   root2: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    '& > *': {
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    "& > *": {
       margin: theme.spacing(0.5),
     },
   },
@@ -49,7 +48,7 @@ export default function UserForm({ userObj, usernameid }) {
   const classes = useStyles();
   console.log(user);
   useEffect(async () => {
-    console.log("In useEffect")
+    console.log("In useEffect");
     const websiteRes = await axios(
       "http://localhost:8990/user/website-api/websites"
     ).catch((err) => {
@@ -57,16 +56,13 @@ export default function UserForm({ userObj, usernameid }) {
     });
     if (websiteRes) setWebsites(websiteRes.data);
 
-    getGenres()
+    getGenres();
   }, []);
 
-
-  const getGenres = async ()=>{
-    const genreRes = await axios(
-      "http://localhost:8990/user/genre-api/genres"
-    )
-    setGenres(genreRes.data)
-  }
+  const getGenres = async () => {
+    const genreRes = await axios("http://localhost:8990/user/genre-api/genres");
+    setGenres(genreRes.data);
+  };
 
   const onSave = async () => {
     if (isOldUser) {
@@ -85,7 +81,23 @@ export default function UserForm({ userObj, usernameid }) {
           webSites: selectedWebsites,
         },
       }).catch((err) => console.log(err));
-      if (savedUser) setUser(savedUser);
+      if (savedUser) {
+        setUser(savedUser);
+        const res = await axios({
+          method: "post",
+          url: "http://localhost:8990/scraping/scrape",
+          data: {
+            id: user.id,
+            username: usernameid,
+            firstName: firstName,
+            lastName: lastName,
+            userEmail: email,
+            imgUrl: "url",
+            genres: selectedGenres,
+            webSites: selectedWebsites,
+          },
+        }).catch((err) => console.log(err));
+      }
       window.location.reload(true);
     } else {
       const savedUser = await axios({
@@ -101,37 +113,71 @@ export default function UserForm({ userObj, usernameid }) {
           webSites: selectedWebsites,
         },
       }).catch((err) => console.log(err));
-      if (savedUser) setUser(savedUser);
+      if (savedUser) {
+        setUser(savedUser);
+        const res = await axios({
+          method: "post",
+          url: "http://localhost:8990/scraping/scrape",
+          data: {
+            username: usernameid,
+            firstName: firstName,
+            lastName: lastName,
+            userEmail: email,
+            imgUrl: "url",
+            genres: selectedGenres,
+            webSites: selectedWebsites,
+          },
+        }).catch((err) => console.log(err));
+      }
+      window.location.reload(true);
     }
   };
 
-  const isIncludedGenres=(obj)=>{
-    console.log("isIncludedGenres")
-    let pos = selectedGenres.map(function(e) { return e.id; }).indexOf(obj.id);
-    if(pos==-1){return false;}else{return true;}
-  }
-
-  const isIncludedWebsites=(obj)=>{
-    console.log("isIncludedWebsites")
-    let pos = selectedWebsites.map(function(e) { return e.websiteId; }).indexOf(obj.websiteId);
-    if(pos==-1){return false;}else{return true;}
-  }
-
-  const handleClickGenres=(genre)=>{
-      if(isIncludedGenres(genre)){
-        setSelectedGenres(selectedGenres.filter(e=>e.id!==genre.id))
-      }else{
-        setSelectedGenres([...selectedGenres, genre])
-      }
-  }
-
-  const handleClickWebsites=(genre)=>{
-    if(isIncludedWebsites(genre)){
-      setSelectedWebsites(selectedWebsites.filter(e=>e.websiteId!==genre.websiteId))
-    }else{
-      setSelectedWebsites([...selectedWebsites, genre])
+  const isIncludedGenres = (obj) => {
+    console.log("isIncludedGenres");
+    let pos = selectedGenres
+      .map(function (e) {
+        return e.id;
+      })
+      .indexOf(obj.id);
+    if (pos == -1) {
+      return false;
+    } else {
+      return true;
     }
-}
+  };
+
+  const isIncludedWebsites = (obj) => {
+    console.log("isIncludedWebsites");
+    let pos = selectedWebsites
+      .map(function (e) {
+        return e.websiteId;
+      })
+      .indexOf(obj.websiteId);
+    if (pos == -1) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const handleClickGenres = (genre) => {
+    if (isIncludedGenres(genre)) {
+      setSelectedGenres(selectedGenres.filter((e) => e.id !== genre.id));
+    } else {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
+  };
+
+  const handleClickWebsites = (genre) => {
+    if (isIncludedWebsites(genre)) {
+      setSelectedWebsites(
+        selectedWebsites.filter((e) => e.websiteId !== genre.websiteId)
+      );
+    } else {
+      setSelectedWebsites([...selectedWebsites, genre]);
+    }
+  };
 
   return (
     <FormControl fullwidth={true}>
@@ -174,21 +220,28 @@ export default function UserForm({ userObj, usernameid }) {
           onChange={(val) => setEmail(val.target.value)}
           required
         />
-        
         <br />
-Select Genres
-    <CustomSelector selectedGenres={selectedGenres} genres={genres} handleClick={handleClickGenres} isIncluded={isIncludedGenres}/>
-    <br/>
-    Select Websites
-    <CustomSelector selectedGenres={selectedWebsites} genres={websites} handleClick={handleClickWebsites} isIncluded={isIncludedWebsites}/>
-      
-    
+        Select Genres
+        <CustomSelector
+          selectedGenres={selectedGenres}
+          genres={genres}
+          handleClick={handleClickGenres}
+          isIncluded={isIncludedGenres}
+        />
+        <br />
+        Select Websites
+        <CustomSelector
+          selectedGenres={selectedWebsites}
+          genres={websites}
+          handleClick={handleClickWebsites}
+          isIncluded={isIncludedWebsites}
+        />
       </form>
-      <Button fullwidth={false} color="primary" 
-      onClick={onSave}
-      // onClick={()=>console.table(selectedWebsites)}
-    
-    
+      <Button
+        fullwidth={false}
+        color="primary"
+        onClick={onSave}
+        // onClick={()=>console.table(selectedWebsites)}
       >
         Save
       </Button>

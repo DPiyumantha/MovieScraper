@@ -22,6 +22,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ScheduledScraper {
@@ -39,73 +40,82 @@ public class ScheduledScraper {
     }
 
 
-
     @Autowired
     RestTemplate restTemplate;
     @Autowired
     Scraper scraper;
 
-    //    @Scheduled(cron = "0 0 12 * * ?", zone = "GMT+5:30")
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "0 0 12 * * ?", zone = "GMT+5:30")
+//    @Scheduled(fixedRate = 10000)
     public void scheduledScraping() {
         System.out.println("Executing scheduled scraping...");
-        HttpHeaders headers = new HttpHeaders();
-        HttpHeaders headersForResource = new HttpHeaders();
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        MultiValueMap<String, String> mapforservice = new LinkedMultiValueMap<>();
+        ResponseEntity<User[]> users = getAllUser();
+        Arrays.asList(users.getBody()).stream().forEach(user -> {
+            scrapeForUser(user);
+        });
 
+    }
+
+    public void scrapeForUser(User user) {
+        int userId = user.getId();
+        List<Movie> movies = new ArrayList<>();
+        List<Genre> genres = user.getGenres();
+        List<WebSite> websites = user.getWebSites();
+        websites.stream().forEach(website -> {
+            try {
+                List<Movie> movieList = scraper.getAllMovies(website.getUrl());
+                movies.addAll(movieList);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        });
+        MoviePayload payload = new MoviePayload();
+        payload.setMovies(movies);
+        payload.setUserId(userId);
+        System.out.println("Sending payload to movie-repository...");
+        System.out.println(payload);
+        restTemplate.postForEntity("http://movie-repository/movies", payload, MovieRecord[].class);
+
+    }
+
+    private ResponseEntity<User[]> getAllUser() {
+        MultiValueMap<String, String> mapforservice = new LinkedMultiValueMap<>();
+        HttpHeaders headersForResource = new HttpHeaders();
+        String authToken = getAuthToken();
+        HttpEntity<MultiValueMap<String, String>> servicerequest = new HttpEntity<>(mapforservice, headersForResource);
+        headersForResource.add("Authorization", "Bearer " + authToken);
+        HttpEntity serviceRequest = new HttpEntity(headersForResource);
+
+        return restTemplate.exchange("http://user/user-api/users", HttpMethod.GET, serviceRequest, User[].class);
+    }
+
+    private String getAuthToken() {
+        HttpHeaders headers = new HttpHeaders();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         String plainCreds = "scraping-service:scrapingpin";
         byte[] plainCredsBytes = plainCreds.getBytes();
         byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
-
-
         map.add("grant_type", "password");
         map.add("username", "admin");
         map.add("password", "admin123");
-
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add("Authorization", "Basic " + base64Creds);
-
         HttpEntity<MultiValueMap<String, String>> oauth2request = new HttpEntity<>(map, headers);
-        HttpEntity<MultiValueMap<String, String>> servicerequest = new HttpEntity<>(mapforservice, headersForResource);
-
         ResponseEntity<String> response = restTemplate.postForEntity("http://authorization-server/oauth/token", oauth2request, String.class);
         String authToken = response.getBody().split("\"")[3];
-        System.out.println("Auth token "+authToken);
+        return authToken;
+    }
 
-        headersForResource.add("Authorization", "Bearer " + authToken);
-        HttpEntity serviceRequest = new HttpEntity(headersForResource);
-
-        ResponseEntity<User[]> users = restTemplate.exchange("http://user/user-api/users",HttpMethod.GET, serviceRequest, User[].class);
-
-        Arrays.asList(users.getBody()).stream().forEach(user -> {
-            int userId = user.getId();
-            List<Movie> movies = new ArrayList<>();
-            List<Genre> genres = user.getGenres();
-            List<WebSite> websites = user.getWebSites();
-            websites.stream().forEach(website -> {
-                try {
-                    List<Movie> movieList = scraper.getAllMovies(website.getUrl());
-                    movies.addAll(movieList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            MoviePayload payload = new MoviePayload();
-
-            payload.setMovies(movies);
-            payload.setUserId(userId);
-
-            System.out.println("Sending payload to movie-repository...");
-            restTemplate.postForEntity("http://movie-repository/movies", payload, MovieRecord[].class);
-
-            System.out.println(payload);
+    public void scheduledScraping(int userIdToScrapeFor) {
+        System.out.println("Executing scheduled scraping for User ID " + userIdToScrapeFor + "...");
+        ResponseEntity<User[]> users = getAllUser();
+        List<User> userObjs = Arrays.stream(users.getBody()).filter(u -> u.getId() == userIdToScrapeFor).collect(Collectors.toList());
+        userObjs.stream().forEach(user -> {
+            scrapeForUser(user);
 
         });
-
     }
 }

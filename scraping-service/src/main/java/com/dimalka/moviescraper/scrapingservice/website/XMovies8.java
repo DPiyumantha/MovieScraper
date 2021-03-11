@@ -52,7 +52,11 @@ public class XMovies8 {
                     Elements es = ee.getElementsByClass("watch_meta-item-genre__dBVfm");
                     if (es != null) {
                         es.stream().forEach(ess -> {
-                            genres.add(ess.ownText());
+                            if(ess.ownText().equals("Documentary")){
+                                genres.add("Documentry");
+                            }else{
+                                genres.add(ess.ownText());
+                            }
                         });
                     }
 //                    ee.getElementsByTag("span").first().ownText().equals("IMDB")
@@ -77,9 +81,9 @@ public class XMovies8 {
                 e.printStackTrace();
             }
         });
-        movieList.stream().forEach(m -> {
-            System.out.println(m);
-        });
+//        movieList.stream().forEach(m -> {
+//            System.out.println(m);
+//        });
         return movieList;
     }
 

@@ -8,7 +8,9 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "aws-sdk": "^2.853.0",
     "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
     "fontsource-roboto": "^4.0.0",
     "rc-texty": "^0.2.0",
     "react": "^17.0.1",
@@ -19,6 +21,7 @@
     "react-select": "^4.1.0",
     "react-simple-oauth2-login": "^0.2.0",
     "react-spring": "^8.0.27",
+    "react-validation": "^3.0.7",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

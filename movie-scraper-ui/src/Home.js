@@ -84,8 +84,9 @@ function Home() {
     <div
       className="App-header "
       style={{
-        backgroundImage: `url(${Background})`,
-        height: "100vh",
+        // backgroundImage: `url(${Background})`,
+        // height: "100vh",
+        minHeight:'100vh',
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",

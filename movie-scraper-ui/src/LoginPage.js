@@ -49,7 +49,7 @@ function LoginPage() {
        className={classes.btn}
         authorizationUrl="http://localhost:9191/oauth/authorize"
         responseType="token"
-        clientId="mobile"
+        clientId="MovieScraper"
         redirectUri="http://localhost:3000"
         onSuccess={onSuccess}
         onFailure={onFailure}

@@ -26,6 +26,14 @@ zuul:
       path: /user/**
       serviceId: user
       stripPrefix: true
+    scraping-service:
+      path: /scraping/**
+      serviceId: scraping
+      stripPrefix: true
+    authorization-service:
+      path: /authorization/**
+      serviceId: authorization-server
+      stripPrefix: true
     movie-repository-service:
       path: /movie-repository/**
       serviceId: movie-repository

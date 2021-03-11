@@ -33,12 +33,12 @@ const [movies, setMovies] = useState([]);
 
   const classes = useStyles();
   return (
-    <TableContainer component={Paper} >
+     (moviedata.length>0)? <TableContainer component={Paper} >
       <Table className={classes.table, "movie- table" } aria-label="simple table">
         <TableHead>
           <TableRow >
             <TableCell >Name</TableCell>
-            <TableCell >Link</TableCell>
+            <TableCell >Year</TableCell>
             <TableCell >Rating</TableCell>
             <TableCell >Genres</TableCell>
           </TableRow>
@@ -46,8 +46,9 @@ const [movies, setMovies] = useState([]);
         <TableBody >
           {moviedata.length>0? moviedata.map((movie) => (
             movie.link.includes("imdb.com")||<TableRow key={movie.name}>
-              <TableCell >{movie.name}</TableCell>
-              <TableCell ><a href={movie.link}>Visit Web Site</a></TableCell>
+              
+              <TableCell ><a href={movie.link}>{movie.name}</a></TableCell>
+              <TableCell >{movie.year}</TableCell>
               <TableCell >{movie.imdb.includes('/')? movie.imdb: "N/A"}</TableCell>
               <TableCell >{movie.genres.map(genre=>genre.name+" ")}</TableCell>
             </TableRow>
@@ -56,5 +57,7 @@ const [movies, setMovies] = useState([]);
         </TableBody>
       </Table>
     </TableContainer>
+    : <p>Complete your registration and refresh the app after few minutes to see the movie list</p>
+  
   );
 }

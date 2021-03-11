@@ -20,8 +20,8 @@ public class Scraper {
     public List<Movie> getAllMovies(String url) throws IOException, CloneNotSupportedException {
 
         switch (url) {
-            case "https://yts.ag":
-            case "https://yts.mx":
+            case "https://yts.ag/browse-movies":
+            case "https://yts.mx/browse-movies":
 
                 return YTS.getScrapedMovies(url);
             case "https://baiscopedownloads.co":

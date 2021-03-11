@@ -1,8 +1,0 @@
-2021-02-28 00:59:51,796 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No user with id 545
-2021-02-28 01:01:08,730 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-3] No user with id 545
-2021-02-28 01:01:11,909 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-8] No user with id 545
-2021-02-28 01:03:07,460 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-6] No user with id 545
-2021-02-28 01:04:33,449 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No user with id 545 :No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!
-2021-02-28 01:05:25,939 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-4] No user with id 545 :No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!
-2021-02-28 01:09:50,095 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!
-2021-02-28 01:14:48,890 ERROR com.dimalka.moviescraper.userservice.controller.UserController [http-nio-auto-1-exec-1] No class com.dimalka.moviescrapercommons.model.userservice.User entity with id 545 exists!

@@ -1,2 +1,0 @@
-2021-02-28 02:03:41,282 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2021-02-28 02:03:47,405 INFO org.springframework.boot.StartupInfoLogger [main] Started NotificationServiceApplication in 13.384 seconds (JVM running for 16.032)

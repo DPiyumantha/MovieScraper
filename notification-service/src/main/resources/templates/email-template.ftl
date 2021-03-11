@@ -6,12 +6,15 @@
 </head>
 <body>
 <div style="margin-left: auto; text-align: center;"></div>
-Hi, ${name}
+<h3>Hi, ${name}</h3>
 <h1>Just for you</h1>
 <#list filteredMovies>
 
     <#items as item>
-        <h2> <a href="${item.link}">${item.name} </a> </h2></br>
+        <h2> <a href="${item.link}">${item.name} </a> </h2>
+
+
+        </br>
     </#items>
     Enjoy!</br>
 <#else></br>

@@ -9,6 +9,9 @@
     
 }
 
+.errorMsg{
+  color:red
+}
 
 .App-header {
     background-color: #33363b;
