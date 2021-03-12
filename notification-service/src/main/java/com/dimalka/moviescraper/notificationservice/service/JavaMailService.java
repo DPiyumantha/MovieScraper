@@ -45,6 +45,7 @@ private Configuration config;
             helper.setSubject(mailRequest.getSubject());
             helper.setFrom(mailRequest.getFrom());
             javaMailSender.send(message);
+            log.info("Mail sent to : "+mailRequest.getTo());
             response.setMessage("Mail sent to : "+mailRequest.getTo());
             response.setStatus(Boolean.TRUE);
         } catch (MessagingException | IOException | TemplateException e) {

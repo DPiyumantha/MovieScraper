@@ -31,6 +31,8 @@ public class MainController {
     }
     @PostMapping("/movies")
     public List<MovieRecord> saveMovies(@RequestBody MoviePayload payload){
+        System.out.println(payload.getMovies());
+        log.info("Saving movies for "+payload.getUserId());
         return movieService.saveAllMovies(payload);
     }
 }

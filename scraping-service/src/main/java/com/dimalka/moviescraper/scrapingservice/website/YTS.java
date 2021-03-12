@@ -34,12 +34,12 @@ public class YTS {
     private static List<Movie> getMoviesFromArticles(List<String> urls) {
         List<Movie> movieList = new ArrayList<>();
         Registry registry = new Registry();
-        List<String> genres = new ArrayList<>();
+
         urls.stream().forEach(url -> {
             try {
                 Document document = Jsoup.connect(url).get();
                 Movie movie = registry.getMovieInstance();
-
+                List<String> genres = new ArrayList<>();
                 Element e = document.getElementById("movie-info");
                 movie.setName(e.getElementsByTag("h1").first().ownText());
                 movie.setYear(Integer.parseInt(e.getElementsByTag("h2").first().ownText()));
@@ -51,7 +51,7 @@ public class YTS {
                     if (row.getElementsByTag("a").first()!=null &&row.getElementsByTag("a").first().attr("href").contains("imdb")) {
                         row.getElementsByTag("span").stream().forEach(span -> {
                             if (span.attr("itemprop").equals("ratingValue")) {
-                                movie.setImdb(span.ownText());
+                                movie.setImdb(span.ownText()+" / 10");
                             }
                         });
                     }
@@ -59,6 +59,7 @@ public class YTS {
                 String imgUrl = document.getElementById("movie-poster").getElementsByTag("img").first().attr("src");
                 movie.setImg(imgUrl);
                 movie.setLink(url);
+                movieList.add(movie);
             } catch (IOException | CloneNotSupportedException e) {
                 e.printStackTrace();
             }

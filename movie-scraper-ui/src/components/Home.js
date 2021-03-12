@@ -1,18 +1,16 @@
-import logo from "./logo.svg";
+
 import Feed from "./Feed";
-import "./styles.css";
+import "../styles.css";
 import axios from "axios";
 import Typography from "@material-ui/core/Typography";
 import { Wave } from "react-animated-text";
 import Container from "@material-ui/core/Container";
-import LoginPage from "./LoginPage";
+import LoginPage from "../LoginPage";
 import { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
 import UserDetails from "./UserDetails";
-import { handle401 } from "./helpers.js/error";
-import ServiceOffline from "./components/ServiceOffline";
-import Background from "./assets/bg.png";
-import Logo from './assets/Untitlggvgvfyed-1.png';
+import { handle401 } from "../helpers/error";
+import ServiceOffline from "./ServiceOffline";
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -21,6 +19,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import {USER_SERVICE_USER} from '../constants/MovieScraperAPI'
 axios.defaults.headers.common["Authorization"] =
   "bearer " + localStorage.getItem("token");
 
@@ -53,7 +52,7 @@ function Home() {
   useEffect(async () => {
     if (localStorage.getItem("token")) {
       const userResult = await axios(
-        "http://localhost:8990/user/user-api/users/username"
+        USER_SERVICE_USER+"/users/username"
       ).catch((err) => {
         if (err.response && err.response.status == 401) handle401();
         // else setIsErrorOccured(true)
@@ -68,7 +67,7 @@ function Home() {
   useEffect(async () => {
     if (localStorage.getItem("token")) {
       const userRes = await axios(
-        "http://localhost:8990/user/user-api/users/user"
+        USER_SERVICE_USER+"/users/user"
       ).catch((err) => {
         if (err.response && err.response.status == 401) handle401();
         // else setIsErrorOccured(true)
@@ -129,7 +128,7 @@ function Home() {
                   window.location.reload(false);
                 }}
               >
-                |->
+                Logout 
               </Button>
             </div>
           </div>

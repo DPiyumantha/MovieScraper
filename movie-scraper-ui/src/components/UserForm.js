@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Selector from "./components/Selector";
+import Selector from "./Selector";
 import axios from "axios";
 import { FormControl, Button } from "@material-ui/core";
-import { handle401 } from "./helpers.js/error";
-import ReactSelect from "./components/ReactSelect";
-import CustomSelector from "./components/CustomSelector";
+import { handle401 } from "../helpers/error";
+import ReactSelect from "./ReactSelect";
+import CustomSelector from "./CustomSelector";
 import MultiSelect from "react-multi-select-component";
 import Chip from "@material-ui/core/Chip";
+import "../styles.css";
+import { USER_SERVICE_GENRE, USER_SERVICE_USER, USER_SERVICE_WEBSITE, SCRAPING_SERVICE } from "../constants/MovieScraperAPI";
+import {validateEmail} from '../helpers/validators'
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -35,11 +38,12 @@ export default function UserForm({ userObj, usernameid }) {
   const [firstName, setFirstName] = useState(user.firstName || "");
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.userEmail);
-  const [genres, setGenres] = useState([{}]);
+  const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = React.useState(
     user.genres ? user.genres : []
   );
   const [websites, setWebsites] = useState([]);
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [selectedWebsites, setSelectedWebsites] = React.useState(
     user.webSites ? user.webSites : []
   );
@@ -50,7 +54,7 @@ export default function UserForm({ userObj, usernameid }) {
   useEffect(async () => {
     console.log("In useEffect");
     const websiteRes = await axios(
-      "http://localhost:8990/user/website-api/websites"
+      USER_SERVICE_WEBSITE+"/websites"
     ).catch((err) => {
       if (err.response.status == 401) handle401();
     });
@@ -60,41 +64,38 @@ export default function UserForm({ userObj, usernameid }) {
   }, []);
 
   const getGenres = async () => {
-    const genreRes = await axios("http://localhost:8990/user/genre-api/genres");
+    const genreRes = await axios(USER_SERVICE_GENRE+"/genres");
     setGenres(genreRes.data);
   };
 
   const onSave = async () => {
+    const dataObj = {
+      username: usernameid,
+      firstName: firstName,
+      lastName: lastName,
+      userEmail: email,
+      imgUrl: "url",
+      genres: selectedGenres,
+      webSites: selectedWebsites,
+    }
     if (isOldUser) {
       console.log("saving old user");
       const savedUser = await axios({
         method: "patch",
-        url: "http://localhost:8990/user/user-api/users",
+        url: USER_SERVICE_USER+"/users",
         data: {
           id: user.id,
-          username: usernameid,
-          firstName: firstName,
-          lastName: lastName,
-          userEmail: email,
-          imgUrl: "url",
-          genres: selectedGenres,
-          webSites: selectedWebsites,
+          ...dataObj
         },
       }).catch((err) => console.log(err));
       if (savedUser) {
         setUser(savedUser);
         const res = await axios({
           method: "post",
-          url: "http://localhost:8990/scraping/scrape",
+          url: SCRAPING_SERVICE+"/scrape",
           data: {
             id: user.id,
-            username: usernameid,
-            firstName: firstName,
-            lastName: lastName,
-            userEmail: email,
-            imgUrl: "url",
-            genres: selectedGenres,
-            webSites: selectedWebsites,
+            ...dataObj
           },
         }).catch((err) => console.log(err));
       }
@@ -102,22 +103,14 @@ export default function UserForm({ userObj, usernameid }) {
     } else {
       const savedUser = await axios({
         method: "post",
-        url: "http://localhost:8990/user/user-api/users",
-        data: {
-          username: usernameid,
-          firstName: firstName,
-          lastName: lastName,
-          userEmail: email,
-          imgUrl: "url",
-          genres: selectedGenres,
-          webSites: selectedWebsites,
-        },
+        url: USER_SERVICE_USER+"/users",
+        data: dataObj
       }).catch((err) => console.log(err));
       if (savedUser) {
         setUser(savedUser);
         const res = await axios({
           method: "post",
-          url: "http://localhost:8990/scraping/scrape",
+          url: SCRAPING_SERVICE+"/scrape",
           data: {
             username: usernameid,
             firstName: firstName,
@@ -130,6 +123,16 @@ export default function UserForm({ userObj, usernameid }) {
         }).catch((err) => console.log(err));
       }
       window.location.reload(true);
+    }
+  };
+
+  const matchEmail = (event) => {
+    setEmail(event.target.value );
+
+    if (validateEmail(event.target.value)) {
+      setIsValidEmail(true);
+    } else {
+      setIsValidEmail(false);
     }
   };
 
@@ -189,7 +192,7 @@ export default function UserForm({ userObj, usernameid }) {
       >
         <TextField
           id="outlined-basic"
-          label="Username - Auto Generated"
+          label="Username - Sorry it can't be changed :P"
           variant="outlined"
           value={username}
           disabled
@@ -214,28 +217,39 @@ export default function UserForm({ userObj, usernameid }) {
         <br />
         <TextField
           id="outlined-basic"
-          label="Email"
+          label="Email - You get your movie updates to this address"
           variant="outlined"
           value={email}
-          onChange={(val) => setEmail(val.target.value)}
+          onChange={matchEmail}
           required
         />
+        {!isValidEmail && <p className="errorMsg">Email not valid</p>}
         <br />
         Select Genres
-        <CustomSelector
-          selectedGenres={selectedGenres}
-          genres={genres}
-          handleClick={handleClickGenres}
-          isIncluded={isIncludedGenres}
-        />
+        {genres.length > 0 ? (
+          <CustomSelector
+            selectedGenres={selectedGenres}
+            genres={genres}
+            handleClick={handleClickGenres}
+            isIncluded={isIncludedGenres}
+          />
+        ) : (
+          <p className="errorMsg">
+            Gosh! DB error. Check your connection please.
+          </p>
+        )}
         <br />
         Select Websites
-        <CustomSelector
+        {websites.length>0?<CustomSelector
           selectedGenres={selectedWebsites}
           genres={websites}
           handleClick={handleClickWebsites}
           isIncluded={isIncludedWebsites}
-        />
+        />:
+        <p className="errorMsg">
+            Gosh! DB error. Check your connection please.
+          </p>
+        }
       </form>
       <Button
         fullwidth={false}

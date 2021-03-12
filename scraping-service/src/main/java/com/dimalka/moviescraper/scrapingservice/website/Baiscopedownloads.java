@@ -35,16 +35,29 @@ public class Baiscopedownloads {
         return movieList;
     }
 
-    private static List<Movie> getMovieFromArticle(List<String> urls) throws CloneNotSupportedException, IOException {
+    private static List<Movie> getMovieFromArticle(List<String> urls) {
         List<Movie> list = new ArrayList<>();
 
 
-        for (String url : urls
-        ) {
-            Document movieArticle;
-            Movie movie = registry.getMovieInstance();
+//        for (String url : urls
+//        ) {
+//
+//
+//        }
+        urls.stream().forEach(url->{
+            Document movieArticle=null;
+            Movie movie = null;
+            try {
+                movie = registry.getMovieInstance();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
             List<String> genres = new ArrayList<>();
-            movieArticle = Jsoup.connect(url).get();
+            try {
+                movieArticle = Jsoup.connect(url).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             String title = movieArticle
                     .getElementsByClass("entry-title")
                     .first()
@@ -73,8 +86,7 @@ public class Baiscopedownloads {
             movie.setImg(image);
             movie.setYear(year);
             list.add(movie);
-
-        }
+        });
 
         return list;
     }

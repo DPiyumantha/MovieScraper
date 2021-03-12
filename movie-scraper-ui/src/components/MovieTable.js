@@ -6,9 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TextTyping from './TextTyping'
 import Paper from '@material-ui/core/Paper';
 import {useState} from 'react';
-import './styles.css';
+import '../styles.css';
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -57,7 +58,7 @@ const [movies, setMovies] = useState([]);
         </TableBody>
       </Table>
     </TableContainer>
-    : <p>Complete your registration and refresh the app after few minutes to see the movie list</p>
+    : <p>Complete your registration and refresh the app after few minutes to see the movie list <TextTyping/></p>
   
   );
 }

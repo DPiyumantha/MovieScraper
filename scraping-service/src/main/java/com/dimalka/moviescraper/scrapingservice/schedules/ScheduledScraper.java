@@ -2,6 +2,7 @@ package com.dimalka.moviescraper.scrapingservice.schedules;
 
 
 import com.dimalka.moviescraper.scrapingservice.service.Scraper;
+import com.dimalka.moviescrapercommons.model.Constants.APIS;
 import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
 import com.dimalka.moviescrapercommons.model.scrapingservice.MoviePayload;
@@ -50,7 +51,7 @@ public class ScheduledScraper {
     public void scheduledScraping() {
         System.out.println("Executing scheduled scraping...");
         ResponseEntity<User[]> users = getAllUser();
-        Arrays.asList(users.getBody()).stream().forEach(user -> {
+        Arrays.asList(users.getBody()).parallelStream().forEach(user -> {
             scrapeForUser(user);
         });
 
@@ -64,6 +65,7 @@ public class ScheduledScraper {
         websites.stream().forEach(website -> {
             try {
                 List<Movie> movieList = scraper.getAllMovies(website.getUrl());
+                System.out.println(movieList);
                 movies.addAll(movieList);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -76,7 +78,7 @@ public class ScheduledScraper {
         payload.setUserId(userId);
         System.out.println("Sending payload to movie-repository...");
         System.out.println(payload);
-        restTemplate.postForEntity("http://movie-repository/movies", payload, MovieRecord[].class);
+        restTemplate.postForEntity(APIS.MOVIE_REPOSITORY_SERVICE, payload, MovieRecord[].class);
 
     }
 
@@ -88,7 +90,7 @@ public class ScheduledScraper {
         headersForResource.add("Authorization", "Bearer " + authToken);
         HttpEntity serviceRequest = new HttpEntity(headersForResource);
 
-        return restTemplate.exchange("http://user/user-api/users", HttpMethod.GET, serviceRequest, User[].class);
+        return restTemplate.exchange(APIS.USER_SERVICE_USER+"/users", HttpMethod.GET, serviceRequest, User[].class);
     }
 
     private String getAuthToken() {
@@ -104,7 +106,7 @@ public class ScheduledScraper {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add("Authorization", "Basic " + base64Creds);
         HttpEntity<MultiValueMap<String, String>> oauth2request = new HttpEntity<>(map, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity("http://authorization-server/oauth/token", oauth2request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(APIS.AUTHORIZATION_SERVER_OAUTH+"/token", oauth2request, String.class);
         String authToken = response.getBody().split("\"")[3];
         return authToken;
     }

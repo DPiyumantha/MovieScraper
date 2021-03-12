@@ -1,6 +1,7 @@
 package com.dimalka.moviescraper.userservice.service;
 
 import com.dimalka.moviescraper.userservice.repository.UserRepository;
+import com.dimalka.moviescrapercommons.model.errorhandler.ErrorMsg;
 import com.dimalka.moviescrapercommons.model.userservice.Genre;
 import com.dimalka.moviescrapercommons.model.userservice.User;
 import com.dimalka.moviescrapercommons.model.userservice.WebSite;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity save(User user) {
         if (getUserByUserEmail(user.getUserEmail()) == null)
             return new ResponseEntity(userRepository.save(user), HttpStatus.OK);
-        return new ResponseEntity("Email address"+user.getUserEmail() +" already exists", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(new ErrorMsg("Email address "+user.getUserEmail()+" already exists."), HttpStatus.CONFLICT);
     }
 
     public List<User> getAllUsers() {
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
             userOriginal.setWebSites(websites);
             return new ResponseEntity(userRepository.save(userOriginal), HttpStatus.OK);
         }
-        return new ResponseEntity("Email address"+user.getUserEmail() +" already registered for another user", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(new ErrorMsg("Email address"+user.getUserEmail() +" already registered for another user"), HttpStatus.BAD_REQUEST);
     }
 
     public void deleteUserById(int id) {

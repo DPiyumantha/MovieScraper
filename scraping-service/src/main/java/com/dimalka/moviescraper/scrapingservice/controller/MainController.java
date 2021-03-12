@@ -27,6 +27,7 @@ public class MainController {
         System.out.println("In /scraper");
         System.out.println(user);
         new Thread(() ->  scheduledScraper.scrapeForUser(user)).start();
+        log.info("scraper started for user "+user.getUsername());
         return "Scraper started";
     }
 
@@ -36,6 +37,7 @@ public class MainController {
         if (movies.size() != 0) {
             return new ResponseEntity(movies, HttpStatus.OK);
         }
+        log.info("No movies on "+fullUrl);
         return new ResponseEntity(movies, HttpStatus.NOT_FOUND);
     }
 

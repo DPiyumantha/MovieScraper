@@ -1,6 +1,7 @@
 package com.dimalka.moviescraper.movierepositoryservice.service;
 
 import com.dimalka.moviescraper.movierepositoryservice.repository.MovieRepository;
+import com.dimalka.moviescrapercommons.model.Constants.APIS;
 import com.dimalka.moviescrapercommons.model.notificationservice.MailRequest;
 import com.dimalka.moviescrapercommons.model.notificationservice.MailResponse;
 import com.dimalka.moviescrapercommons.model.scrapingservice.Movie;
@@ -8,6 +9,8 @@ import com.dimalka.moviescrapercommons.model.repositoryservice.MovieRecord;
 import com.dimalka.moviescrapercommons.model.scrapingservice.MoviePayload;
 import com.dimalka.moviescrapercommons.model.userservice.Genre;
 import com.dimalka.moviescrapercommons.model.userservice.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -29,7 +32,7 @@ public class MovieService {
         return builder.build();
     }
 
-    ;
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     RestTemplate restTemplate;
@@ -46,16 +49,16 @@ public class MovieService {
 
         List<Movie> list = payload.getMovies();
         int userId = payload.getUserId();
-        System.out.println("Saving all movies for user ID "+ userId+"...");
+        log.info("Saving all movies for user ID "+ userId+"...");
         List<MovieRecord> savedMovies = new ArrayList<>();
         list.stream().forEach(movie -> {
 
             MovieRecord m = saveMovie(movie, userId);
             if (m != null) savedMovies.add(m);
         });
-        System.out.println("Saving completed for user ID "+ userId+"...");
+        log.info("Saving completed for user ID "+ userId+"...");
         ResponseEntity<User> userFromUserServiceRes =
-                restTemplate.exchange("http://user/user-api/users/"+userId, HttpMethod.GET, contactUserService(), User.class);
+                restTemplate.exchange(APIS.USER_SERVICE_USER+"/users/"+userId, HttpMethod.GET, contactUserService(), User.class);
         System.out.println(userFromUserServiceRes);
         User userFromUserService = userFromUserServiceRes.getBody();
         System.out.println("Saved movies : "+savedMovies.size());
@@ -82,7 +85,7 @@ public class MovieService {
             mailRequest.setAllMovies(savedMovies);
             mailRequest.setFilteredMovies(filteredMovies);
             System.out.println("Sending mail request...");
-            restTemplate.postForEntity("http://notification/sendmail", mailRequest, MailResponse.class);
+            restTemplate.postForEntity(APIS.NOTIFICATION_SERVICE, mailRequest, MailResponse.class);
         }
         return savedMovies;
     }
@@ -93,7 +96,7 @@ public class MovieService {
             HttpEntity<List<String>> request = new HttpEntity<List<String>>(genres, new HttpHeaders());
 
             ResponseEntity<Genre[]> genreObjs =
-                restTemplate.exchange("http://user/genre-api/genreobjs", HttpMethod.POST, contactUserService(genres), Genre[].class);
+                restTemplate.exchange(APIS.USER_SERVICE_GENRE+"/genreobjs", HttpMethod.POST, contactUserService(genres), Genre[].class);
             List<com.dimalka.moviescrapercommons.model.repositoryservice.Genre> listOfGenres = new ArrayList<>();
             Arrays.stream(Objects.requireNonNull(genreObjs.getBody())).forEach(g->{
                 com.dimalka.moviescrapercommons.model.repositoryservice.Genre gs =
@@ -142,7 +145,7 @@ public class MovieService {
         HttpEntity<MultiValueMap<String, String>> oauth2request = new HttpEntity<>(map, headers);
 
         ResponseEntity<String> response =
-                restTemplate.postForEntity("http://authorization-server/oauth/token", oauth2request, String.class);
+                restTemplate.postForEntity(APIS.AUTHORIZATION_SERVER_OAUTH+"/token", oauth2request, String.class);
         String authToken = response.getBody().split("\"")[3];
         System.out.println("Auth token "+authToken);
 
@@ -174,7 +177,7 @@ public class MovieService {
         HttpEntity<MultiValueMap<String, String>> oauth2request = new HttpEntity<>(map, headers);
 
         ResponseEntity<String> response =
-                restTemplate.postForEntity("http://authorization-server/oauth/token", oauth2request, String.class);
+                restTemplate.postForEntity(APIS.AUTHORIZATION_SERVER_OAUTH+"/token", oauth2request, String.class);
         String authToken = response.getBody().split("\"")[3];
         System.out.println("Auth token "+authToken);
 
