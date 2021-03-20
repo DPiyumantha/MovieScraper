@@ -38,12 +38,6 @@ public class Baiscopedownloads {
     private static List<Movie> getMovieFromArticle(List<String> urls) {
         List<Movie> list = new ArrayList<>();
 
-
-//        for (String url : urls
-//        ) {
-//
-//
-//        }
         urls.stream().forEach(url->{
             Document movieArticle=null;
             Movie movie = null;
