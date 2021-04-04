@@ -9,4 +9,4 @@ eureka:
     register-with-eureka: true
   instance:
     instance-id: ${spring.application.name}-${random.int}
-    hostname: localhost
+    hostname: ms-discovery-con
