@@ -22,11 +22,14 @@ public class XMovies8 {
         Registry registry = new Registry();
         document = Jsoup.connect(url).get();
         List<String> linksForEachMovie = new ArrayList<>();
-
-        Elements elements = document.getElementsByClass("poster_content-list__11G1q");
-        elements.get(1).getElementsByTag("a").stream().forEach(a -> {
-            linksForEachMovie.add("https://xmovies8.pw" + a.attr("href"));
-        });
+        Elements elements = document.getElementsByClass("jss84");
+        System.out.println(document.getElementsByClass("jss84").first());
+        System.out.println(elements);
+        if (elements.size() > 0) {
+            elements.first().getElementsByTag("a").stream().forEach(a -> {
+                linksForEachMovie.add("https://xmovies8.pw" + a.attr("href"));
+            });
+        }
 //        System.out.println(linksForEachMovie);
 //        System.out.println(document.getElementsByClass("poster_content-list__11G1q"));
         return getMoviesFromArticles(linksForEachMovie);
@@ -52,9 +55,9 @@ public class XMovies8 {
                     Elements es = ee.getElementsByClass("watch_meta-item-genre__dBVfm");
                     if (es != null) {
                         es.stream().forEach(ess -> {
-                            if(ess.ownText().equals("Documentary")){
+                            if (ess.ownText().equals("Documentary")) {
                                 genres.add("Documentry");
-                            }else{
+                            } else {
                                 genres.add(ess.ownText());
                             }
                         });

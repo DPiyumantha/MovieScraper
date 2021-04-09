@@ -38,6 +38,7 @@ const [movies, setMovies] = useState([]);
       <Table className={classes.table, "movie- table" } aria-label="simple table">
         <TableHead>
           <TableRow >
+          <TableCell >Poster</TableCell>
             <TableCell >Name</TableCell>
             <TableCell >Year</TableCell>
             <TableCell >Rating</TableCell>
@@ -45,12 +46,14 @@ const [movies, setMovies] = useState([]);
           </TableRow>
         </TableHead>
         <TableBody >
+
+          {console.log(moviedata)}
           {moviedata.length>0? moviedata.map((movie) => (
             movie.link.includes("imdb.com")||<TableRow key={movie.name}>
-              
+              <TableCell ><img src={movie.img} style={{width:100}}></img></TableCell>
               <TableCell ><a href={movie.link}>{movie.name}</a></TableCell>
               <TableCell >{movie.year}</TableCell>
-              <TableCell >{movie.imdb.includes('/')? movie.imdb: "N/A"}</TableCell>
+              <TableCell >{movie.imdb.includes('/')?  "N/A":movie.imdb}</TableCell>
               <TableCell >{movie.genres.map(genre=>genre.name+" ")}</TableCell>
             </TableRow>
           

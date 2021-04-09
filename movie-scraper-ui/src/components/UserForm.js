@@ -47,8 +47,7 @@ export default function UserForm({ userObj, usernameid }) {
   const [selectedWebsites, setSelectedWebsites] = React.useState(
     user.webSites ? user.webSites : []
   );
-  const [currentUser, setCurrentUser] = useState({});
-  const [updatedUser, setUpdatedUser] = React.useState([]);
+ const [isErrorOccured, setIsErrorOccured] = useState({"failed":false, "message":""});
   const classes = useStyles();
   console.log(user);
   useEffect(async () => {
@@ -87,7 +86,8 @@ export default function UserForm({ userObj, usernameid }) {
           id: user.id,
           ...dataObj
         },
-      }).catch((err) => console.log(err));
+      }).catch((err) =>{setIsErrorOccured({"failed":true, "message":"Something went wrong. Please try again later. Updated details not saved."});
+         console.log(err)});
       if (savedUser) {
         setUser(savedUser);
         const res = await axios({
@@ -97,7 +97,7 @@ export default function UserForm({ userObj, usernameid }) {
             id: user.id,
             ...dataObj
           },
-        }).catch((err) => console.log(err));
+        }).catch((err) => {setIsErrorOccured({"failed":true, "message":"Something went wrong. Scraping did not started. "}); console.log(err)});
       }
       window.location.reload(true);
     } else {
@@ -105,7 +105,7 @@ export default function UserForm({ userObj, usernameid }) {
         method: "post",
         url: USER_SERVICE_USER+"/users",
         data: dataObj
-      }).catch((err) => console.log(err));
+      }).catch((err) => {setIsErrorOccured({"failed":true, "message":"Something went wrong. Please try again later. Updated details not saved."});console.log(err)});
       if (savedUser) {
         setUser(savedUser);
         const res = await axios({
@@ -120,9 +120,10 @@ export default function UserForm({ userObj, usernameid }) {
             genres: selectedGenres,
             webSites: selectedWebsites,
           },
-        }).catch((err) => console.log(err));
+        }).catch((err) => {setIsErrorOccured({"failed":true, "message":"Something went wrong. Please try again later. Updated details not saved."});console.log(err)});
       }
-      window.location.reload(true);
+      // window.location.reload(true);
+      setTimeout(()=>window.location.reload(true),2000)
     }
   };
 
@@ -192,7 +193,7 @@ export default function UserForm({ userObj, usernameid }) {
       >
         <TextField
           id="outlined-basic"
-          label="Username - Sorry it can't be changed :P"
+          label="Username - Sorry this can't be changed :P"
           variant="outlined"
           value={username}
           disabled
