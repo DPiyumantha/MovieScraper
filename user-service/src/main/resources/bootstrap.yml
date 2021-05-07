@@ -2,7 +2,7 @@ spring:
   application:
     name: user
 server:
-  port: 0
+  port: 8080
 eureka:
   client:
     fetch-registry: true

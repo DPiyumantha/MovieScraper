@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://ms-db-user/moviescraperuser?createDatabaseIfNotExist=true
+    url: jdbc:mysql://ms-user-db:3306/moviescraperuser?createDatabaseIfNotExist=true
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,8 +15,11 @@ spring:
 security:
   oauth2:
     resource:
-      token-info-uri: http://localhost:9191/oauth/check_token
+      token-info-uri: http://ms-auth-con:9191/oauth/check_token
     client:
       client-id: MovieScraper
       client-secret: pin
-
+eureka:
+  client:
+    service-url:
+      defaultZone: http://ms-discovery-con:8761/eureka

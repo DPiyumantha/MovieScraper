@@ -21,6 +21,11 @@ public class MainController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/test")
+    public String sayHello(){
+        return "Hello";
+    }
+
     @PostMapping("/user/register")
     public ResponseEntity<?> greet(@RequestBody User user) {
         try {
