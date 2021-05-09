@@ -13,6 +13,7 @@ import '../styles.css';
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    color:'green'
   },
 });
 
@@ -35,10 +36,10 @@ const [movies, setMovies] = useState([]);
   const classes = useStyles();
   return (
      (moviedata.length>0)? <TableContainer component={Paper} >
-      <Table className={classes.table, "movie- table" } aria-label="simple table">
+      <Table className={classes.table, "movie-table" } aria-label="simple table">
         <TableHead>
-          <TableRow >
-          <TableCell >Poster</TableCell>
+          <TableRow>
+          <TableCell className={"table-heading"} >Poster</TableCell>
             <TableCell >Name</TableCell>
             <TableCell >Year</TableCell>
             <TableCell >Rating</TableCell>
@@ -49,19 +50,19 @@ const [movies, setMovies] = useState([]);
 
           {console.log(moviedata)}
           {moviedata.length>0? moviedata.map((movie) => (
-            movie.link.includes("imdb.com")||<TableRow key={movie.name}>
+            movie.link.includes("imdb.com")||<TableRow style={{backgroundColor:'#002b80', color: 'white',}} key={movie.name}>
               <TableCell ><img src={movie.img} style={{width:100}}></img></TableCell>
-              <TableCell ><a href={movie.link}>{movie.name}</a></TableCell>
-              <TableCell >{movie.year}</TableCell>
-              <TableCell >{movie.imdb.includes('/')?  "N/A":movie.imdb}</TableCell>
-              <TableCell >{movie.genres.map(genre=>genre.name+" ")}</TableCell>
+              <TableCell ><a style={{color:'white', fontSize:'1.2em', textDecoration:'none'}} href={movie.link}>{movie.name}</a></TableCell>
+              <TableCell style={{color:'white'}}>{movie.year}</TableCell>
+              <TableCell style={{color:'white'}}>{movie.imdb.includes('/')?  "N/A":movie.imdb}</TableCell>
+              <TableCell style={{color:'white'}}>{movie.genres.map(genre=>genre.name+" ")}</TableCell>
             </TableRow>
           
           )):<></>}
         </TableBody>
       </Table>
     </TableContainer>
-    : <p>Complete your registration and refresh the app after few minutes to see the movie list <TextTyping/></p>
+    : <p>Complete your registration and refresh the app after few minutes to see the movie list or hit "Scrape now" <TextTyping/></p>
   
   );
 }

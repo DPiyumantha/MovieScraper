@@ -20,7 +20,7 @@
   }
 
   .login-page {
-    background-color: rgba(213, 230, 233, 0.7);
+    background-color: #002b80;
     min-height: 70vh;
     display: flex;
     flex-direction: column;
@@ -31,7 +31,12 @@
   }
   
   .movie-table{
-      background-color: rgb(30, 31, 71);
+      background-color: rgb(188, 189, 236);
       color: bisque;
       
+  }
+
+  .table-heading{
+    font-size: 1.2em;
+    color: white;
   }

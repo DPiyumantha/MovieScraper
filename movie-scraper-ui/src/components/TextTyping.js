@@ -5,7 +5,7 @@ class TextTyping extends React.Component {
   render () {
     return (
       <Typical
-        steps={['Movie scraper is waiting... 🤗', 2000,'Hmm... did you refresh? 🤔', 1000, "Let's wait for few more minutes! 😒", 1000]}
+        steps={['Movie scraper is waiting... 🤗', 2000,'Hmm... did you refresh or hit "Scrape Now"? 🤔', 1000, "Let's wait for few more minutes! 😒", 1000]}
         loop={Infinity}
         wrapper="p"
       />

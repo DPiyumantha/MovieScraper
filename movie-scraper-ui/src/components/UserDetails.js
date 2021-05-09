@@ -6,7 +6,9 @@ import Backdrop from "@material-ui/core/Backdrop";
 import { useSpring, animated } from "react-spring/web.cjs"; // web.cjs is required for IE 11 support
 import { Button } from "@material-ui/core";
 import UserForm from "./UserForm";
+import axios from "axios";
 
+import { USER_SERVICE_GENRE, USER_SERVICE_USER, USER_SERVICE_WEBSITE, SCRAPING_SERVICE } from "../constants/MovieScraperAPI";
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -63,7 +65,19 @@ export default function UserDetails({ userObj, username }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = useState(userObj);
+  const [isErrorOccured, setIsErrorOccured] = useState({"failed":false, "message":""});
+  const scrapeNow = async (user)=>{
+console.log("Hi ",user)
+const res = await axios({
+  method: "post",
+  url: SCRAPING_SERVICE+"/scrape",
+  data: {
+    ...user,
+    websites:user.webSites
+  },
+}).catch((err) => {setIsErrorOccured({"failed":true, "message":"Something went wrong. Please try again later. Updated details not saved."});console.log(err)});
 
+  }
   const handleOpen = () => {
     setOpen(true);
   };
@@ -85,9 +99,14 @@ console.log(user)
         react-spring
       </button> */}
       {user.firstName && username ? (
+        <>
+        <Button color="primary" onClick={()=>scrapeNow(user)}>
+          Scrape Now
+        </Button>
         <Button color="primary" onClick={handleOpen}>
           {user.firstName} @{username}
         </Button>
+        </>
       ) : (
         <Button color="primary" onClick={handleOpen}>
           Complete Your Registration!

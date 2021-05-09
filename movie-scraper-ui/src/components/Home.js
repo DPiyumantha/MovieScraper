@@ -5,7 +5,7 @@ import axios from "axios";
 import Typography from "@material-ui/core/Typography";
 import { Wave } from "react-animated-text";
 import Container from "@material-ui/core/Container";
-import LoginPage from "../LoginPage";
+import LoginPage from "./LoginPage";
 import { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
 import UserDetails from "./UserDetails";

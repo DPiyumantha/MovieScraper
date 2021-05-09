@@ -1,12 +1,12 @@
-import logo from "./logo.svg";
-import "./App.css";
+
+import "../App.css";
 import { useState, useRef } from "react";
 import OAuth2Login from "react-simple-oauth2-login";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
-import Logo from './assets/Untitlggvgvfyed-1.png'
+import Logo from '../assets/Untitlggvgvfyed-1.png'
 import React from 'react'
-import Register from "./components/Register";
+import Register from "./Register";
 import { SportsRugbySharp } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   btn:{
@@ -31,7 +31,7 @@ function LoginPage() {
     <div className="login-page" >
       <img style={{width:325}} src={Logo}></img>
      {/* <h1 style={{color:"#4103fc"}}>Movie Scraper</h1> */}
-      <h3 style={{color:"#4103fc"}}>
+      <h3 style={{color:"#fff"}}>
               Movies from all your favorite websites now available in one place!
             </h3>
       <br />
