@@ -11,10 +11,10 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka
   instance:
-    hostname: localhost
+    hostname: discovery
 
 zuul:
   host:
@@ -25,7 +25,7 @@ zuul:
     user-service:
       path: /user/**
       serviceId: user
-      stripPrefix: true
+      stripPrefix: false
     scraping-service:
       path: /scraping/**
       serviceId: scraping

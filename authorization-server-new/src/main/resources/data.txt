@@ -21,7 +21,7 @@ insert into user (id, username,password, email, enabled, accountNonExpired, cred
 insert into  user (id, username,password, email, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked) VALUES ('2', 'lion', '{bcrypt}$2a$09$vSY3xhCuK3tKBXrwNoY4FOO6FY4bwSHsZLc5PbLRlYtdRiIcaxf4.','lion.piumantha@gmail.com', '1', '1', '1', '1');
 insert into  user (id, username,password, email, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked) VALUES ('3', 'admin', '{bcrypt}$2a$09$yTVstPXnbCAb4R0J/VKb9uci9INHDu.R4UBcKDUZXwsxPwIj6GFTa','dimalka.piyumantha@gmail.com', '1', '1', '1', '1');
 
-INSERT INTO ROLE_USER (ROLE_ID, USER_ID)
+INSERT INTO role_user (ROLE_ID, USER_ID)
 VALUES
 (1, 1) /* dima-admin */,
 (2, 2) /* lion-operatorr */ ,

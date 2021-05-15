@@ -2,13 +2,12 @@ spring:
   application:
     name: authorization-server
 
-
-server:
-  port: 0
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
+    service-url:
+      defaultZone: http://discovery:8761/eureka
   instance:
     instance-id: ${spring.application.name}-${random.int}
-    hostname: localhost
+    hostname: discovery

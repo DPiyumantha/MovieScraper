@@ -41,5 +41,10 @@ public class MainController {
         return new ResponseEntity(movies, HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/hello")
+    public String sayHello(){
+        return "Hello";
+    }
+
 
 }
